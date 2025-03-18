@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { tabName, tabData } from "../data/tabData";
+import { tabName, tabTh, tabData } from "../data/tabData";
 
 export default function TabComponent(){
     // tab-list
@@ -11,6 +11,7 @@ export default function TabComponent(){
 
     // tab-con-list
     const tabDataKey = Object.keys(tabData);
+    const tabThKey = Object.keys(tabTh);
 
     return(
         <>
@@ -28,10 +29,13 @@ export default function TabComponent(){
                 <table>
                     <thead>
                         <tr>
-                            {
-                                activeTab === 0 ?
-                                (<th>1</th>) :
-                                (<th>2</th>)
+                            {activeTab == tabName.length - 1
+                                ? tabTh[tabThKey[1]].map((th, index) => (
+                                    <th key={index}>{th}</th>
+                                ))
+                                : tabTh[tabThKey[0]].map((th, index)=> (
+                                    <th key={index}>{th}</th>
+                                ))
                             }
                         </tr>
                     </thead>

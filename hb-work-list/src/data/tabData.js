@@ -24,10 +24,7 @@ const tabData = {
                 {
                     type: "css",
                     files: [
-                        "src>main>resources>static>css>metaui.css",
-                        "src>main>resources>static>css>metaui.min.css",
-                        "src>main>resources>static>css>metaMui.css",
-                        "src>main>resources>static>css>metaMui.min.css"
+                        ".css"
                     ]
                 }
             ],
@@ -59,4 +56,4 @@ const tabData = {
     ]
 }
 
-export { tabName, tabData };
+export { tabName, tabTh, tabData };
