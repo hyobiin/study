@@ -33,16 +33,15 @@ const tabData = {
             ],
             image: "img/250306_main.PNG",
             link: [
-                "https://handok.metapay-dev.co.kr/",
-                "https://kmi.metapay-dev.co.kr/",
-                "file:///C:/payrollIF/workspace/ess-html/01metapay/html/index.html"
+                "링크",
+                "링크"
             ],
-            notice: "한독, ls, 가온과 나머지 법인들이 적용된 내용이 달라서 분기처리 삭제해야 했음",
+            notice: "수정 내역",
             annotation: [
                 "1,2: 현재 기본 배너 (분기처리 되어 있던 부분 삭제), // 기본 배너, 제증명신청 배너 분기처리 삭제",
                 "[hb] 250306 법인명으로 분기처리 되어 있던 부분 통합 처리"
             ],
-            requestor: "250306 완료 <br> 손성희 이사님"
+            requestor: "250306 완료"
         },
     ],
     projectA:[
@@ -50,12 +49,12 @@ const tabData = {
             section: "푸터",
             method: {
                 type: "link",
-                text: "https://metapay.co.kr/signin",
+                text: "링크",
                 image: "img/250307_wp_admin.PNG"
             },
-            link: "https://metapay.co.kr/",
-            annotation: "Bottom에 있는 대표전화 수정 02-2040-5366 -> 02-2040-5296",
-            requestor: "250307 완료 <br> 손성희 이사님"
+            link: "링크",
+            annotation: "수정내역",
+            requestor: "250307 완료"
         },
     ]
 }
