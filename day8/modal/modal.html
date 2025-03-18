@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="modal.css">
+  <script>
+    var checkIdModal;
+
+    window.addEventListener('DOMContentLoaded', function(){
+      checkIdModal = new Modal();
+
+      /*
+      checkIdModal.setWidth('400px');
+      checkIdModal.setHeight('initial');
+      // checkIdModal.setHeader(null);
+      // checkIdModal.setHeader('<p>헤더 내용</p>');
+      checkIdModal.setTitle('타이틀');
+      checkIdModal.setContent('<div class="modal_inquiry_result">완료되었습니다.</div>');
+      // checkIdModal.setFooter('<span class="btn btn_style1 modal_confirm" onclick="checkIdModal.hide();">확인</span>')
+      checkIdModal.setPositiveButton('확인', () => {
+        checkIdModal.hide();
+      });
+      checkIdModal.setPositiveButton('확인1', () => {
+        checkIdModal.hide();
+      });
+      checkIdModal.setNegativeButton('취소', () => {
+        checkIdModal.hide();
+      });
+      checkIdModal.setPositiveButton('확인1', () => {
+        checkIdModal.hide();
+      });
+      checkIdModal.setNegativeButton('취소24', () => {
+        checkIdModal.hide();
+      });
+
+      // id로 같은 모달 띄우기
+      checkIdModal.setModalDisplayBtnIds(["btn1"]);
+      */
+    });
+
+    function modalShow(){
+      // 위처럼 checkIdModal의 반복을 줄이기 위해 js에서 return this 사용 => 체이닝
+      checkIdModal.setWidth('400px').setContent('<div class="modal_inquiry_result">완료되었습니다.</div>').show();
+    }
+  </script>
+  <script src="modal.js"></script>
+</head>
+<body>
+  <!-- <div class="modal"><div class="modal_inner"><div class="modal_content"><div class="modal_header"><span class="close">&times;</span><div class="modal_title"></div></div><div class="modal_body"></div><div class="modal_footer"></div></div></div></div> -->
+  <!-- <input type="button" onclick="checkIdModal.show();" value="입력"> -->
+  <input type="button" onclick="modalShow();" value="입력">
+  <input type="button" id="btn1" value="추가버튼">
+</body>
+</html>

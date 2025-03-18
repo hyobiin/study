@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>비디오 기능 구현하기</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{padding:20px;background:#f4f4f4;font-family:Arial, sans-serif;text-align:center;}
+    .video-container{overflow:hidden;position:relative;width:640px;margin:0 auto;border-radius:10px;background:#000;}
+    video{display:block;width:100%;border-radius:10px;}
+    .controls{display:flex;justify-content:space-between;align-items:center;padding:10px;background:rgba(0,0,0,0.7);color:#fff;}
+    button{padding:8px 16px;border:0;border-radius:5px;background:#007bff;color:#fff;cursor:pointer;transition:.3s;}
+    button:hover{background:#0056b3;}
+    input[type="range"]{width:100px;}
+    .progress{width:100%;height:5px;background:#555;cursor:pointer;}
+    .progress-filled{width:0;height:100%;background:#ffcc00;}
+  </style>
+</head>
+<body>
+  <h1>🎥 커스텀 비디오 플레이어</h1>
+  <div class="video-container">
+    <video id="video" src="https://www.w3schools.com/html/mov_bbb.mp4"></video>
+
+    <div id="progressBar" class="progress">
+      <div class="progress-filled"></div>
+    </div>
+
+    <div class="controls">
+      <button id="rewind">⏪ 3초</button>
+      <button id="playPauseBtn">▶ 재생</button>
+      <button id="forward">⏩ 3초</button>
+      <span id="currentTime">00:00 / 00:00</span>
+      <input type="range" id="volume" min="0" max="1" step="0.1" value="1">
+      <select name="" id="speed">
+        <option value="0.5">0.5x</option>
+        <option value="1" selected>1x</option>
+        <option value="1.5">1.5x</option>
+        <option value="2">2x</option>
+      </select>
+      <button id="fullScreen">⛶ 전체화면</button>
+    </div>
+  </div>
+
+  <script>
+    const video = document.getElementById('video');
+    const rewindBtn = document.getElementById('rewind');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const forwardBtn = document.getElementById('forward');
+    const currentTimeDisplay = document.getElementById('currentTime');
+    const volumeControl = document.getElementById('volume');
+    const speedControl = document.getElementById('speed');
+    const fullScreenBtn = document.getElementById('fullScreen');
+    const progressBar = document.getElementById('progressBar');
+    const progressFilled = document.querySelector('.progress-filled');
+
+    playPauseBtn.addEventListener('click', () => {
+      if(video.paused || video.ended){
+        video.play();
+        playPauseBtn.textContent = '⏸ 일시정지';
+      }else{
+        video.pause();
+        playPauseBtn.textContent = '▶ 재생';
+      }
+    });
+
+    video.addEventListener('timeupdate', () => {
+      const currentMinutes = Math.floor(video.currentTime / 60).toString().padStart(2, '0');
+      const currentSeconds = Math.floor(video.currentTime % 60).toString().padStart(2, '0');
+      const durationMinutes = Math.floor(video.duration / 60).toString().padStart(2, '0');
+      const durationSeconds = Math.floor(video.duration % 60).toString().padStart(2, '0');
+
+      currentTimeDisplay.textContent = `${currentMinutes}:${currentSeconds} / ${durationMinutes}:${durationSeconds}`;
+
+      const progressPercent = video.currentTime / video.duration * 100;
+      progressFilled.style.width = `${progressPercent}%`;
+    });
+
+    volumeControl.addEventListener('input', () => {
+      video.volume = volumeControl.value;
+    });
+
+    rewindBtn.addEventListener('click', () => {
+      video.currentTime -= 3;
+    });
+
+    forwardBtn.addEventListener('click', () => {
+      video.currentTime += 3;
+    });
+
+    speedControl.addEventListener('change', () => {
+      video.playbackRate = speedControl.value;
+    });
+
+    fullScreenBtn.addEventListener('click', () => {
+      if(video.requestFullscreen()){
+        video.requestFullscreen();
+      }else if(video.mozRequestFullsreen){ // firefox
+        video.mozRequestFullsreen();
+      }else if(video.webkitRequestFullsreen){ // chrome, safari, opera
+        video.webkitRequestFullsreen();
+      }else if(video.msRequestFullsreen){ // ie, edge
+        video.msRequestFullsreen();
+      }
+    });
+
+    progressBar.addEventListener('click', (e) => {
+      const newTime = (e.offsetX / progressBar.offsetWidth) * video.duration;
+      video.currentTime = newTime;
+    });
+  </script>
+</body>
+</html>
