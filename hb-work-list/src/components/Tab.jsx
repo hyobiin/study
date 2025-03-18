@@ -11,6 +11,7 @@ export default function TabComponent(){
 
     // tab-con-list
     const tabDataKey = Object.keys(tabData);
+
     const tabThKey = Object.keys(tabTh);
 
     return(
@@ -27,6 +28,15 @@ export default function TabComponent(){
             </ul>
             <div className="tab-con-list">
                 <table>
+                    <colgroup>
+                        <col width="80px" />
+                        <col />
+                        <col width="200px" />
+                        <col />
+                        <col width="20%" />
+                        <col width="300px" />
+                        <col width="120px" />
+                    </colgroup>
                     <thead>
                         <tr>
                             {activeTab == tabName.length - 1
@@ -42,15 +52,24 @@ export default function TabComponent(){
                     <tbody>
                         {
                             tabName.map((tab, index) => (
-                                <tr key={index}
+                                <div key={index}
                                     className={`tab-con ${activeTab === index ? "active" : ""}`}
                                 >
-                                    {
-                                        tabData[tabDataKey[index]].map((data, index) => (
-                                            <td key={index}>{data.notice}</td>
-                                        ))
-                                    }
-                                </tr>
+                                    <tr>
+                                        {
+                                            tabData[tabDataKey[index]].map((data, dataIndex) => (
+                                                Object.values(data).map((value, valueIndex) => (
+                                                    <td key={`${dataIndex}-${valueIndex}`}>
+                                                        {Array.isArray(value) ? value.join(", ") :
+                                                        typeof value === "object" ?
+                                                        Object.entries(value).map(([key, val]) => `${key}: ${val}`).join(", ") :
+                                                        value}
+                                                    </td>
+                                                ))
+                                            ))
+                                        }
+                                    </tr>
+                                </div>
                             ))
                         }
                     </tbody>
