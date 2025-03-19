@@ -71,13 +71,18 @@ const tabData = {
     ],
     homepage:[
         {
-            section: "푸터",
-            method: {
-                type: "link",
-                text: "링크",
-                image: "img/250307_wp_admin.PNG"
-            },
-            link: "링크",
+            section: "메인",
+            method:[
+                {
+                    type: "html",
+                    files: [
+                        "src>main.html",
+                        "src>main.html2"
+                    ]
+                }
+            ],
+            image: "img/250307_wp_admin.PNG",
+            link: "www.naver.com",
             annotation: "Bottom에 있는 대표전화 수정",
             requestor: "완료날짜"
         },
