@@ -14,6 +14,8 @@ export default function TabComponent(){
 
     const tabThKey = Object.keys(tabTh);
 
+    console.trace('여기서 호출');
+
     return(
         <>
             <ul className="tab-list">
@@ -27,53 +29,49 @@ export default function TabComponent(){
                 }
             </ul>
             <div className="tab-con-list">
-                <table>
-                    <colgroup>
-                        <col width="80px" />
-                        <col />
-                        <col width="200px" />
-                        <col />
-                        <col width="20%" />
-                        <col width="300px" />
-                        <col width="120px" />
-                    </colgroup>
-                    <thead>
-                        <tr>
-                            {activeTab == tabName.length - 1
-                                ? tabTh[tabThKey[1]].map((th, index) => (
-                                    <th key={index}>{th}</th>
-                                ))
-                                : tabTh[tabThKey[0]].map((th, index)=> (
-                                    <th key={index}>{th}</th>
-                                ))
-                            }
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            tabName.map((tab, index) => (
-                                <div key={index}
-                                    className={`tab-con ${activeTab === index ? "active" : ""}`}
-                                >
-                                    <tr>
-                                        {
-                                            tabData[tabDataKey[index]].map((data, dataIndex) => (
-                                                Object.values(data).map((value, valueIndex) => (
-                                                    <td key={`${dataIndex}-${valueIndex}`}>
-                                                        {Array.isArray(value) ? value.join(", ") :
-                                                        typeof value === "object" ?
-                                                        Object.entries(value).map(([key, val]) => `${key}: ${val}`).join(", ") :
-                                                        value}
-                                                    </td>
-                                                ))
-                                            ))
-                                        }
+                {tabName.map((tab, index) => (
+                    <div key={index}
+                        className={`tab-con ${activeTab === index ? "active" : ""}`}
+                    >
+                        <table>
+                            <colgroup>
+                                <col width="5%" />
+                                <col width="25%" />
+                                <col width="10%" />
+                                <col width="25%" />
+                                <col width="20%" />
+                                <col width="10%" />
+                                <col width="5%" />
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    {activeTab == tabName.length - 1
+                                        ? tabTh[tabThKey[1]].map((th, index) => (
+                                            <th key={index}>{th}</th>
+                                        ))
+                                        : tabTh[tabThKey[0]].map((th, index)=> (
+                                            <th key={index}>{th}</th>
+                                        ))
+                                    }
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {tabData[tabDataKey[index]].map((data, dataIndex) => (
+                                    <tr key={dataIndex}>
+                                    {Object.values(data).map((value, valueIndex) => (
+                                        <td key={`${dataIndex}-${valueIndex}`}>
+                                            {Array.isArray(value) ? value.join(", ") :
+                                            typeof value === "object" ?
+                                            Object.entries(value).map(([key, val]) => `${key}: ${val}`).join(", ") :
+                                            value}
+                                        </td>
+                                    ))}
                                     </tr>
-                                </div>
-                            ))
-                        }
-                    </tbody>
-                </table>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                ))}
             </div>
         </>
     )
