@@ -69,24 +69,34 @@ export default function TabComponent(){
                                         </td>
                                         <td><a href={data.image}></a></td>
                                         <td>
-                                        {(typeof data.link === "string" // 문자열인지 구분하여 true면 배열로 반환
-                                            ? [data.link]
-                                            : Array.isArray(data.link) // 배열인지 구분하여 true면 그대로 반환
-                                            ? data.link
-                                            : Object.values(data.link) // 문자열과 배열이 아니면(객체라고 간주) 값을 배열로 변환
-                                        ).map((link, index) => (
-                                            <a key={index} href={link}>{link}</a>
-                                        ))}
-
-                                        {/*
-                                            Array.isArray( data ) => data가 배열(array)인지 확인
-                                            Object.values( data ) => data(객체)의 값을 배열로 반환
-                                            Object.keys( data ) => data(객체)의 key값을 배열로 반환
-                                        */}
+                                            {(typeof data.link === "string" // 문자열인지 구분하여 true면 배열로 반환
+                                                ? [data.link]
+                                                : Array.isArray(data.link) // 배열인지 구분하여 true면 그대로 반환
+                                                ? data.link
+                                                : Object.values(data.link) // 문자열과 배열이 아니면(객체라고 간주) 값을 배열로 변환
+                                            ).map((link, index) => (
+                                                <a key={index} href={link}>{link}</a>
+                                            ))}
+                                            {/*
+                                                Array.isArray( data ) => data가 배열(array)인지 확인
+                                                Object.values( data ) => data(객체)의 값을 배열로 반환
+                                                Object.keys( data ) => data(객체)의 key값을 배열로 반환
+                                                Object.entries( data ) => data(객체)의 키-값 쌍 -> key, value를 배열로 반환
+                                                Object.fromEntries( data ) => data(배열)를 객체로 변환
+                                            */}
                                         </td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
+                                        <td>{data.notice}</td>
+                                        <td>
+                                            {(typeof data.annotation == "string"
+                                                ? [data.annotation]
+                                                : Array.isArray(data.annotation)
+                                                ? data.annotation
+                                                : Object.values(data.annotation)
+                                            ).map((annotation, index) => (
+                                                <div key={index}>{annotation}</div>
+                                            ))}
+                                        </td>
+                                        <td>{data.requestor}</td>
                                     </tr>
                                 ))}
                             </tbody>
