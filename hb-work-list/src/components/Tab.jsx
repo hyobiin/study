@@ -32,7 +32,6 @@ export default function TabComponent(){
                         className={`tab-con ${activeTab === index ? "active" : ""}`}
                     >
                         <table>
-                            {/* TODO: colgroup도 분기해야함 */}
                             { activeTab == tabName.length - 1
                             ?   <colgroup>
                                     <col width="5%" />
