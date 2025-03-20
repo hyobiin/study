@@ -32,16 +32,26 @@ export default function TabComponent(){
                         className={`tab-con ${activeTab === index ? "active" : ""}`}
                     >
                         <table>
-                            {/* TODO: colgrop도 분기해야함 */}
-                            <colgroup>
-                                <col width="5%" />
-                                <col width="25%" />
-                                <col width="10%" />
-                                <col width="25%" />
-                                <col width="20%" />
-                                <col width="10%" />
-                                <col width="5%" />
-                            </colgroup>
+                            {/* TODO: colgroup도 분기해야함 */}
+                            { activeTab == tabName.length - 1
+                            ?   <colgroup>
+                                    <col width="5%" />
+                                    <col width="25%" />
+                                    <col width="15%" />
+                                    <col width="25%" />
+                                    <col width="20%" />
+                                    <col width="10%" />
+                                </colgroup>
+                            :   <colgroup>
+                                    <col width="5%" />
+                                    <col width="25%" />
+                                    <col width="10%" />
+                                    <col width="25%" />
+                                    <col width="20%" />
+                                    <col width="10%" />
+                                    <col width="5%" />
+                                </colgroup>
+                            }
                             <thead>
                                 <tr>
                                     {activeTab == tabName.length - 1
@@ -105,7 +115,7 @@ export default function TabComponent(){
                                                     ).map((link, index) => (
                                                         <a key={index} href={link}>{link}</a>
                                                     ))}
-                                                    {/*
+                                                    {/* NOTE
                                                         Array.isArray( data ) => data가 배열(array)인지 확인
                                                         Object.values( data ) => data(객체)의 값을 배열로 반환
                                                         Object.keys( data ) => data(객체)의 key값을 배열로 반환
