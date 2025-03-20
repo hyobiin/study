@@ -1,4 +1,4 @@
-body, div{margin:0;padding:0}
+body{margin:5px;}
 .wrap{overflow:hidden;padding:30px;background:unset;}
 .wrap h1{font-size:39px;font-weight:700;}
 .wrap h2{display:inline-block;position:relative;margin:35px 0;padding:10px;border-radius:8px;background:rgb(131, 174, 240);font-size:28px;font-weight:700;line-height:28px;}
@@ -46,6 +46,11 @@ table td p{position:relative;padding-left:15px;}
 table td p::before{content:'✔';position:absolute;left:0;top:0};
 a:focus{color:red;}
 .important{color:red;font-size:10px !important;}
+
+/* input */
+.search-box{display:flex;align-items:center;justify-content:center;gap:15px;}
+.search-box input{height:40px;padding:5px;border:2px solid #333;border-radius:8px;}
+.search-box .btn-search{padding:10px;border-radius:8px;background:#1c1c1c;font-size:20px;font-weight:700;color:#fff;}
 
 /* paging */
 /* body {
