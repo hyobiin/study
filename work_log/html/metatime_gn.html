@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>그누보드</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="https://hyobiin.github.io/study/work_log/css/common.css">
+</head>
+<body>
+    <div class="wrap">
+        <h1>그누보드</h1>
+        <h2>변수명 정리</h2>
+        <div class="table_wrap">
+            <table>
+                <colgroup>
+                    <col width="20%">
+                    <col width="30%">
+                    <col width="50%">
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>변수명</th>
+                        <th>설명</th>
+                        <th>예시 / 사용 위치</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>$g5</td>
+                        <td>그누보드 전역 환경 변수 (경로, 설정값 등 저장)</td>
+                        <td>$g5['url'], $g5['bbs_url'] 등</td>
+                    </tr>
+                    <tr>
+                        <td>$member</td>
+                        <td>현재 로그인한 회원 정보</td>
+                        <td>$member['mb_id'], $member['mb_name']</td>
+                    </tr>
+                    <tr>
+                        <td>$board</td>
+                        <td>현재 게시판 설정 정보 (스킨, 권한 등)</td>
+                        <td>$board['bo_subject'], $board['bo_skin']</td>
+                    </tr>
+                    <tr>
+                        <td>$write</td>
+                        <td>현재 게시글 데이터 (글 내용, 작성자 정보 등)</td>
+                        <td>$write['wr_subject'], $write['wr_content']</td>
+                    </tr>
+                    <tr>
+                        <td>$list</td>
+                        <td>게시판에서 글 목록 루프용 배열</td>
+                        <td>foreach ($list as $row)</td>
+                    </tr>
+                    <tr>
+                        <td>$write_table</td>
+                        <td>현재 게시판의 DB 테이블명</td>
+                        <td>g5_write_{bo_table}</td>
+                    </tr>
+                    <tr>
+                        <td>$bo_table</td>
+                        <td>현재 게시판 아이디 (게시판 고유 키)</td>
+                        <td>g5_write_{$bo_table}</td>
+                    </tr>
+                    <tr>
+                        <td>$wr_id</td>
+                        <td>현재 글의 고유 ID (pk)</td>
+                        <td>select * from {$write_table} where wr_id = $wr_id</td>
+                    </tr>
+                    <tr>
+                        <td>$is_admin</td>
+                        <td>현재 접속자의 관리자 권한 (super, group, board, ``)</td>
+                        <td>if ($is_admin == 'super') { ... }</td>
+                    </tr>
+                    <tr>
+                        <td>$qstr</td>
+                        <td>검색, 페이징 등 쿼리스트링 변수 (url 파라미터 처리)</td>
+                        <td>echo $qstr</td>
+                    </tr>
+                    <tr>
+                        <td>$page</td>
+                        <td>현재 페이지 번호</td>
+                        <td>echo $page</td>
+                    </tr>
+                    <tr>
+                        <td>$total_count</td>
+                        <td>총 게시글 수</td>
+                        <td>echo $total_count</td>
+                    </tr>
+                    <tr>
+                        <td>$write_pages</td>
+                        <td>페이지 네비게이션용 변수 (1 2 3 4 ...)</td>
+                        <td>echo $write_pages</td>
+                    </tr>
+                    <tr>
+                        <td>$config</td>
+                        <td>사이트 전체 환경설정 값 (config.php 기준)</td>
+                        <td>$config['cf_title'], $config['cf_admin_email']</td>
+                    </tr>
+                    <tr>
+                        <td>$file</td>
+                        <td>게시판에서 업로드한 파일 정보 배열</td>
+                        <td>$file[0]['source'], $file[0]['view']</td>
+                    </tr>
+                    <tr>
+                        <td>$view</td>
+                        <td>게시글을 조회할 때 게시글의 모든 정보를 저장하는 배열 (게시글 제목, 내용, 작성자, 조회수 등 다양한 데이터 포함)</td>
+                        <td>$view['sub_index']</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <h2>head.php</h2>
+        <h3>경로: app/korens/pinat/theme/basic/head.php (기본테마 사용)</h3>
+        <div>
+            <div class="table_wrap">
+                <table>
+                    <colgroup>
+                        <col width="40%">
+                        <col width="30%">
+                        <col width="30%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>코드</th>
+                            <th>설명</th>
+                            <th>어드민에서 수정 방법</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>if (!defined('_GNUBOARD_')) exit; // 개별 페이지 접근 불가</td>
+                            <td>
+                                <ul>
+                                    <li>그누보드의 모든 PHP 파일 상단에 삽입되는 보호 코드</li>
+                                    <li>_GNUBOARD_ 상수가 정의되어 있는지 확인하고 직접 URL 접근하거나 외부에서 단독 실행하면 강제 종료</li>
+                                </ul>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>if (G5_IS_MOBILE) {
+                                include_once(G5_THEME_MOBILE_PATH.'/head.php');
+                                return;
+                            }</td>
+                            <td><ul>
+                                <li>G5_IS_MOBILE은 그누보드에서 모바일 환경 여부를 확인하는 상수 (mo:true, pc:false 반환)</li>
+                                <li></li>
+                            </ul></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>include_once(G5_THEME_PATH.'/head.sub.php'); <br>
+                                include_once(G5_LIB_PATH.'/latest.lib.php');
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>include_once => 같은 파일이 중복 되지 않게 막아줌</li>
+                                    <li>보통 head나 footer, tail 파일에서 사용</li>
+                                </ul>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>&lt;h1 id="hd_h1"&gt;&lt;?php echo $g5['title'] ?&gt;&lt;/h1&gt;</pre></td>
+                            <td>$g5['title'] => 게시판 제목</td>
+                            <td>게시판 관리 → 게시판 목록 → 게시판 제목 수정</td>
+                        </tr>
+                        <tr>
+                            <td>&lta href="&lt?php echo G5_URL ?&gt;"&gt;&ltimg src="https://help.pinat.co.kr/img/logo_metatime.png" alt="&lt?php echo $config['cf_title']; ?&gt;"&gt;&lt/a&gt;</td>
+                            <td>
+                                <ul>
+                                    <li>G5_URL: 그누보드5의 기본 상수라서 바꾸지 못함</li>
+                                    <li>$config['cf_title'] => 홈페이지 제목</li>
+                                    <li>로고 이미지는 해당 php에서 링크로 넣어줘야 함</li>
+                                </ul>
+                            </td>
+                            <td>환경설정 → 기본환경설정 → 홈페이지 제목 수정</td>
+                        </tr>
+                        <tr>
+                            <td>&lt;?php
+                                $sql = " select bo_table, bo_subject
+                                            from {$g5['board_table']}
+                                            where gr_id = 'docs'
+                                            order by bo_order asc
+                                            ";
+                                $docs_r = sql_query($sql);
+                                ?&gt;</td>
+                            <td>게시판 테이블에서 docs라는 그룹에 속하는 게시판의 이름과 제목을 오름차순으로 조회</td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>&lt;?php
+                                $gnb_zindex = 999; // gnb_1dli z-index 값 설정용
+                                while($row = sql_fetch_array($docs_r)) {
+                                    $write_table = $g5['write_prefix'] . $row['bo_table']; // 게시판 테이블 전체이름
+                                    $ssql = sql_query(" select * from {$write_table} where wr_is_comment = 0 ");
+                                ?&gt;</td>
+                            <td>
+                                <ul>
+                                    <li>docs 그룹에 속한 각 게시판에 대해 해당 게시판의 게시글 목록(댓글을 제외한)을 불러오는 코드</li>
+                                    <li>루프가 돌면서 각 게시판에 대해 해당하는 글 목록을 차례대로 가져옴</li>
+                                </ul>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>&lt;a href="#" class="gnb_1da"&gt;&lt;?php echo $row['bo_subject'] ?&gt;&lt;/a&gt;</td>
+                            <td>$row['bo_subject'] => 각 게시판 제목 출력 (현재 게시판)</td>
+                            <td>게시판 관리 → 게시판관리 → 제목 수정</td>
+                        </tr>
+                        <tr>
+                            <td>class="gnb_2da  &lt;?php echo ($row['bo_table'] == $bo_table && $row2['wr_id'] == $wr_id) ? "active" : ""?&gt;"&gt;</a></td>
+                            <td><ul>
+                                <li>$row['bo_table']: 게시판 테이블명</li>
+                                <li>$row2['wr_id']: 게시글 고유 ID이기 떄문에 변경 불가 X</li>
+                                <li>현재 게시판과 게시글 ID가 같으면 active 클래스 추가</li>
+                            </ul></td>
+                            <td>게시판 관리 → 게시판관리 → 수정 → TABLE 명 수정</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h2>head_sub.php</h2>
+            <ul>
+                <li>head.php 파일에 include 되고 있음</li>
+                <li>meta태그, 자바스크립트에서 사용하는 전역변수 선언, 회원 로그인 여부를 출력해주고 있음</li>
+                <li><dl>
+                    <dt>&lt;body&lt;?php echo isset($g5['body_script']) ? $g5['body_script'] : ''; ?&&gt;&&gt;</dt>
+                    <dd>동적으로 body 태그에 추가</dd>
+                    <dd>isset(변수) => 변수가 존재하는지, NULL 값이 아닌지 확인 <span class="php">PHP 함수_true, false 반환</span></dd>
+                    <dd>$g5['body_script']라는 변수가 존재하고 NULL이 아니면 $g5['body_script']을 출력하고 아니면 비워라</dd>
+                </dl></li>
+            </ul>
+            <h2>tail.php</h2>
+            <div class="table_wrap">
+                <table>
+                    <colgroup>
+                        <col width="40%">
+                        <col width="30%">
+                        <col width="30%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>코드</th>
+                            <th>설명</th>
+                            <th>어드민에서 수정 방법</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>if($view['sub_index']) {
+                                echo $view['sub_index'];
+                            }</td>
+                            <td>
+                                <ul>
+                                    <li><dl>
+                                        <dt>$view[]</dt>
+                                        <dd>게시글을 조회할 때 게시글의 모든 정보를 저장하는 배열 (게시글 제목, 내용, 작성자, 조회수 등 다양한 데이터 포함)</dd>
+                                        <dd>$config['cf_xxx'] 형태로 사용됨 (cf_analytics, cf_title, cf_admin_email 등)</dd>
+                                    </dl></li>
+                                    <li>게시글의 sub_index가 있으면 뿌려라</li>
+                                </ul>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>if ($config['cf_analytics']) {
+                                echo $config['cf_analytics'];
+                            }</td>
+                            <td>
+                                <ul>
+                                    <li><dl>
+                                        <dt>$config['cf_analytics']</dt>
+                                        <dd>사이트 전체 환경 설정 값들을 저장하는 배열</dd>
+                                        <dd>$config['cf_xxx'] 형태로 사용됨 (cf_analytics, cf_title, cf_admin_email 등)</dd>
+                                    </dl></li>
+                                    <li>cf_analytics가 있으면 뿌려라</li>
+                                </ul>
+                            </td>
+                            <td>관리자 페이지 → 환경설정 → 기본환경설정 (여기서 소스보기로 'cf_analytics' 값을 검색해보면 수정할 곳 알 수 있음)</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <h2>index.php</h2>
+            <div class="table_wrap">
+                <table>
+                    <colgroup>
+                        <col width="40%">
+                        <col width="30%">
+                        <col width="30%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>코드</th>
+                            <th>설명</th>
+                            <th>어드민에서 수정 방법</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>if (!defined('_INDEX_')) define('_INDEX_', true);</td>
+                            <td>
+                                <ul>
+                                    <li>_INDEX_ 상수는 현재 페이지가 메인 페이지임을 의미</li>
+                                    <li>_INDEX_ 상수가 정의되지 않았으면 _INDEX_를 true로 정의</li>
+                                    <li><dl>
+                                        <dt>define('상수명', 값)</dt>
+                                        <dd>상수를 정의하는 함수 <span class="php">PHP 함수_const와 비슷</span></dd>
+                                    </dl></li>
+                                </ul>
+                            </td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>header("Location: /user/1");</td>
+                            <td><ul>
+                                <li>PC에서 이 코드가 실행되면 /user/1 페이지로 이동</li>
+                                <li>exit;이 없지만, 헤더 리다이렉트 후에는 일반적으로 추가 코드가 실행되지 않음</li>
+                                <li><dl>
+                                    <dt>header("Location: URL")</dt>
+                                    <dd>PHP에서 페이지를 강제로 이동시키는 함수 <span class="php">PHP 함수</span></dd>
+                                </dl></li>
+                            </ul></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <h2>admin</h2>
+            <img src="https://hyobiin.github.io/study/work_log/images/admin.PNG" alt="">
+        </div>
+    </div>
+</body>
+</html>
