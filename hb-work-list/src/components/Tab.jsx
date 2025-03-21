@@ -59,7 +59,7 @@ export default function TabComponent(){
                 <button className="btn-search" onClick={handleSearch}>검색</button>
             </div>
 
-            {/* TODO 검색 로직
+            {/* TODO_HB 검색 로직
                 [o] 1. 데이터를 배열로 가져오기 (검색 로직에 사용하기 위함)
                 [] 1-1. 해당 탭 데이터만 배열로 가져오기
                 [] 2. 버튼을 눌렀을 때 input value 값을 가져와서 있는지 없는지 비교
@@ -169,7 +169,7 @@ export default function TabComponent(){
                                                     ).map((link, index) => (
                                                         <a key={index} href={link}>{link}</a>
                                                     ))}
-                                                    {/* NOTE
+                                                    {/* NOTE_HB
                                                         Array.isArray( data ) => data가 배열(array)인지 확인
                                                         Object.values( data ) => data(객체)의 값을 배열로 반환
                                                         Object.keys( data ) => data(객체)의 key값을 배열로 반환

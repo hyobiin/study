@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jsp</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="https://hyobiin.github.io/study/work_log/css/common.css">
+</head>
+<body>
+    <div class="wrap">
+        <h1>jsp</h1>
+        <h2>ess-ui 프론트</h2>
+        <h3>paySlip.html</h3>
+        <div class="table_wrap">
+            <table>
+                <colgroup>
+                    <col width="35%">
+                    <col>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>코드 및 속성</th>
+                        <th>설명</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>xmlns="http://www.w3.org/1999/xhtml"</td>
+                        <td><ul>
+                            <li>XHTML 문법을 따르도록 선언</li>
+                            <li>일반 HTML에서는 생략 가능</li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>xmlns:th="http://www.thymeleaf.org"</td>
+                        <td><ul>
+                            <li>Thymeleaf를 사용, 네임스페이스 선언</li>
+                            <li>th:text, th:if, th:each 같은 Thymeleaf 속성 사용 가능</li>
+                            <li>ex)<dl>
+                                <dt>&lt;p th:text="${message}"&gt;기본 텍스트&lt;/p&gt;</dt>
+                                <dd>동적으로 '기본 텍스트'를 뿌려줌</dd>
+                            </dl></li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"</td>
+                        <td><ul>
+                            <li>Thymeleaf에서 템플릿 레이아웃을 사용</li>
+                            <li>부모(레이아웃) 템플릿과 자식(컨텐츠) 템플릿을 연결하는 기능</li>
+                            <li><dl>
+                                <dt>layout:decorate, layout:fragment 같은 속성을 사용 가능</dt>
+                                <dd>layout:decorate → 자식 템플릿이 사용할 부모(레이아웃) 파일을 지정</dd>
+                                <dd>layout:fragment → 부모(레이아웃)에서 채울 부분을 정의</dd>
+                            </dl></li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>layout:decorate="~{layout/default_layout}"</td>
+                        <td><ul>
+                            <li>기본 레이아웃을 적용하여 중복 코드 줄이기</li>
+                            <li><dl>
+                                <dt>부모-자식 이어주는 역할</dt>
+                                <dd>레이아웃(부모 템플릿): default_layout.html</dd>
+                                <dd>현재 페이지(자식 템플릿): layout:decorate 속성을 통해 default_layout.html을 상속받음</dd>
+                            </dl></li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>&lt;div layout:fragment="content"&gt;&lt;/div&gt;</td>
+                        <td><ul>
+                            <li>해당 속성이 있는 부분은 해당 페이지에서 동적으로 변경 됨</li>
+                            <li><dl>
+                                <dt>layout:fragment</dt>
+                                <dd>자식 템플릿이 부모 템플릿에 특정 영역을 채울 수 있도록 정의하는 속성</dd>
+                                <dd>동적으로 채움</dd>
+                            </dl></li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>&lt;script type="text/javascript" th:inline="javascript"&gt;</td>
+                        <td><ul>
+                            <li>서버 데이터를 자바스크립트 변수에 주입</li>
+                            <li><p>예제👇</p>
+                                <div class="expain_code">
+                                    <div>&lt;script type="text/javascript" th:inline="javascript"&gt; <br>
+                                        &nbsp;&nbsp;var username = /*[[${user.name}]]*/ "기본값"; <br>
+                                        &nbsp;&nbsp;var userId = /*[[${user.id}]]*/ 0; <br>
+                                        &lt;/script&gt;
+                                    </div>
+                                    <ul>
+                                        <li>서버에서 넘겨준 ${user.name}과 ${user.id}가 서버에서 넘겨준 데이터로 변환</li>
+                                        <li>var username = "홍길동"; <br>
+                                            var userId = 12345;
+                                        </li>
+                                        <li>/*[[ ]]*/ 문법을 사용하면 XSS(스크립트 공격)를 방지 → 안전한 데이터 출력 가능</li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>th:src="@{...}"</td>
+                        <td><ul>
+                            <li>Thymeleaf가 동적으로 경로를 변환하여 JavaScript 파일을 불러옴</li>
+                            <li>브라우저에서는 src="/js/cmmn/Chart.js" 이렇게 보임</li>
+                            <li><dl>
+                                <dt>장점</dt>
+                                <dd>컨텍스트 경로(Context Path) 자동 적용 (유지보수 편리)</dd>
+                                <dd><p>예제👇</p>
+                                    <div class="expain_code pb0">
+                                        <div>th:src="@{/js/cmmn/Chart.js}" → src="/contextPath/js/cmmn/Chart.js" <br>
+                                            가정) contextPath가 myapp이라면 → src="/myapp/js/cmmn/Chart.js" 으로 출력
+                                        </div>
+                                    </div>
+                                </dd>
+                            </dl></li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>&lt;h2 th:text="#{metapay.ess.salary.statement.inquiry}"&gt;급여명세서 조회&lt;/h2&gt;</td>
+                        <td><ul>
+                            <li><dl>
+                                <dt>th:text</dt>
+                                <dd>동적으로 텍스트 생성</dd>
+                            </dl></li>
+                            <li><dl>
+                                <dt>#{key} <span class="spring">spring 문법</span></dt>
+                                <dd>Spring의 messages.properties 파일 사용 (다국어 지원)</dd>
+                            </dl></li>
+                            <li>messages.ko.properties와 messages.en.properties에서 metapay.ess.salary.statement.inquiry 검색</li>
+                        </ul></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <h2>Thymeleaf 속성</h2>
+        <div class="table_wrap">
+            <table>
+                <colgroup>
+                    <col width="20%">
+                    <col widht="30%">
+                    <col>
+                </colgroup>
+                <thead>
+                    <tr>
+                        <th>속성</th>
+                        <th>설명</th>
+                        <th>예시</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>th:text</td>
+                        <td>텍스트 내용을 동적 생성</td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>th:utext</td>
+                        <td>텍스트 내용을 실제 HTML 요소로 렌더링</td>
+                        <td><dl>
+                            <dt>&lt;p th:utext="${text}"&gt;&lt;/p&gt;</dt>
+                            <dd>가정: text = "&lt;strong&gt;He &lt;br&gt; llo&lt;/strong&gt;"</dd>
+                            <dd>결과:<br> <strong>안 <br> 녕</strong></dd>
+                        </dl></td>
+                    </tr>
+                    <tr>
+                        <td>th:block</td>
+                        <td><ul>
+                            <li>렌더링되는 HTML 요소 없이 특정 처리</li>
+                            <li><dl>
+                                <dt>반복문, 조건문을 사용하고 싶을 때 유용</dt>
+                                <dd>조건문: if 조건이 ture 일 때만 렌더링</dd>
+                                <dd>반복문: 리스트나 배열의 각 항목을 순차적으로 렌더링</dd>
+                            </dl></li>
+                        </ul></td>
+                        <td><ul>
+                            <li><dl>
+                                <dt>조건문 <br>
+                                    &lt;th:block th:if="${ssRootCompanyId == 'C000001000' || ssRootCompanyId == 'C000001010'}"&gt;<br>
+                                    &nbsp;&nbsp;&lt;h1&gt;특정 회사에 대한 정보&lt;/h1&gt;<br>
+                                    &nbsp;&nbsp;&lt;p&gt;이 회사에만 보여지는 내용입니다.&lt;/p&gt;<br>
+                                    &lt;/th:block&gt;
+                                </dt>
+                                <dd>ssRootCompanyId가 'C000001000' 또는 'C000001010'일 때만 하위 태그들이 보여짐</dd>
+                            </dl></li>
+                        </ul></td>
+                    </tr>
+                    <tr>
+                        <td>th:href</td>
+                        <td>href 속성에 서버 측 변수를 동적으로 바인딩</td>
+                        <td>&lt;a th:href="@{'/profile/' + ${user.id}}"&gt;프로필 페이지&lt;/a&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>th:src</td>
+                        <td>이미지 URL을 동적으로 설정</td>
+                        <td>&lt;img th:src="@{'/images/' + ${user.profileImage}}" alt="프로필 이미지"&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>th:each</td>
+                        <td>컬렉션을 반복하여 각 항목을 출력</td>
+                        <td><dl>
+                            <dt>
+                                &lt;ul&gt;
+                                &nbsp;&nbsp;&lt;li th:each="item : ${items}" th:text="${item}"&gt;리스트 항목&lt;/li&gt;
+                                &lt;/ul&gt;
+                            </dt>
+                            <dd>${items} 리스트를 순회하면서 각 항목을 li 태그 안에 출력</dd>
+                        </dl></td>
+                    </tr>
+                    <tr>
+                        <td>th:if</td>
+                        <td>조건문을 사용해 해당 요소를 조건적으로 렌더링</td>
+                        <td><dl>
+                            <dt>
+                                &lt;p th:if="${user != null}" th:text="'사용자: ' + ${user.name}"&gt;사용자 정보&lt;/p&gt;
+                            </dt>
+                            <dd>${user != null}이 true일 때만 해당 p 태그를 렌더링</dd>
+                        </dl></td>
+                    </tr>
+                    <tr>
+                        <td>th:unless</td>
+                        <td>unless는 if의 반대, 조건이 false일 때 요소를 표시</td>
+                        <td><dl>
+                            <dt>
+                                &lt;p th:unless="${user != null}"&gt;사용자가 없습니다&lt;/p&gt;
+                            </dt>
+                            <dd>${user != null}이 false일 때 해당 p 태그를 렌더링</dd>
+                        </dl></td>
+                    </tr>
+                    <tr>
+                        <td>th:attr</td>
+                        <td>여러 속성들을 한 번에 동적으로 변경</td>
+                        <td>
+                            &lt;a th:attr="href=@{'/profile/' + ${user.id}}, title=${user.name}"&gt;프로필&lt;/a&gt;
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>th:class</td>
+                        <td>조건에 따라 클래스 값을 동적으로 설정</td>
+                        <td><dl>
+                            <dt>
+                                &lt;div th:class="${user.active} ? 'active' : 'inactive'"&gt;사용자 상태&lt;/div&gt;
+                            </dt>
+                            <dd>${user.active}가 true이면 'active' 클래스, 그렇지 않으면 'inactive' 클래스를 설정</dd>
+                        </dl></td>
+                    </tr>
+                    <tr>
+                        <td>th:classappend</td>
+                        <td>클래스 추가</td>
+                        <td>&lt;div th:classappend="${isActive} ? 'active' : 'inactive'"&gt;&lt;/div&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>th:style</td>
+                        <td>조건에 따라 스타일을 동적으로 변경</td>
+                        <td><dl>
+                            <dt>&lt;div th:style="'background-color: ' + ${user.favoriteColor}"&gt;배경 색상&lt;/div&gt;</dt>
+                            <dd>${user.favoriteColor} 값에 따라 배경 색상을 설정</dd>
+                        </dl></td>
+                    </tr>
+                    <tr>
+                        <td>th:switch / th:case</td>
+                        <td>주어진 값에 따라 여러 조건을 선택 <br> 조건문을 사용할 때 switch-case처럼 사용</td>
+                        <td><dl>
+                            <dt>&lt;div th:switch=&quot;${user.status}&quot;&gt;
+                                &nbsp;&nbsp;p th:case=&quot;'active'&quot;&gt;활성화된 사용자&lt;/p&gt;
+                                &nbsp;&nbsp;p th:case=&quot;'inactive'&quot;&gt;비활성화된 사용자&lt;/p&gt;
+                                &nbsp;&nbsp;p th:case=&quot;*&quot;&gt;알 수 없는 상태&lt;/p&gt;
+                                &lt;/div&gt;
+                            </dt>
+                            <dd>${user.status}가 "active"일 경우 "활성화된 사용자", "inactive"일 경우 "비활성화된 사용자", 그 외의 값은 "알 수 없는 상태"를 출력</dd>
+                        </dl></td>
+                    </tr>
+                    <tr>
+                        <td>th:fragment</td>
+                        <td>템플릿을 재사용 가능한 조각으로 나눠서 관리</td>
+                        <td><dl>
+                            <dt>&lt;!-- fragment 정의 --&gt;
+                                &lt;div th:fragment=&quot;userDetails&quot;&gt;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&lt;h2 th:text=&quot;${user.name}&quot;&gt;이름&lt;/h2&gt;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&lt;p th:text=&quot;${user.age}&quot;&gt;나이&lt;/p&gt;
+                                &lt;/div&gt;
+                                <br><br>
+                                &lt;!-- fragment 호출 --&gt;
+                                &lt;div th:replace=&quot;~{::userDetails}&quot;&gt;&lt;/div&gt;
+                            </dt>
+                            <dd>th:fragment를 사용해 재사용 가능한 템플릿 조각을 정의하고, th:replace를 사용해 호출함</dd>
+                        </dl></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>
