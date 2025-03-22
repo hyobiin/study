@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { tabName, tabTh, tabData } from "../data/tabData";
 
 export default function TabComponent(){
-    ///// s === 탭 ===
+    ///// s ============ 탭 ============
     // tab-list
     const [activeTab, setActiveTab] = useState(0) // 현재 선택된 탭의 index
 
@@ -14,17 +14,26 @@ export default function TabComponent(){
     const tabDataKey = Object.keys(tabData);
 
     const tabThKey = Object.keys(tabTh);
-    ///// e === 탭 ===
+    ///// e ============ 탭 ============
 
-    ///// s === 검색 ===
+    ///// s ============ 검색 ============
     const [searchTerm, setSearchTerm] = useState("");
     const searchInpRef = useRef(null);
 
-    // 검색어 클릭시 검색어 설정
+    // 검색 버튼 클릭시 검색어 설정
     const handleSearch = () => {
-        if(searchInpRef.current){
-            setSearchTerm(searchInpRef.current.value.toLowerCase());
-        }
+        if (!searchInpRef.current || searchInpRef.current.value.trim() === "") return;
+
+        // setSearchTerm(searchInpRef.current.value.toLowerCase());
+        const filteredData = extractedValues[activeTab].map(tab =>
+            tab.filter(data => JSON.stringify(data).toLowerCase().includes(searchInpRef.current.value))
+        )
+        console.log("---------------------")
+        console.log(searchInpRef.current.value)
+        console.log(filteredData)
+        console.log("---------------------")
+
+
     }
 
     // 검색어가 포함된 데이터만 필터링
@@ -35,12 +44,12 @@ export default function TabComponent(){
     )
     console.log(extractedValues[activeTab]);
 
-    console.log(`화깅ㄴ`, extractedValues[activeTab], Array.isArray(extractedValues[activeTab]))
+    // console.log(`화깅ㄴ`, extractedValues[activeTab], Array.isArray(extractedValues[activeTab]))
 
     // const filteredData = Object.values(tabData).map(tab =>
     //     tab.filter(data => JSON.stringify(data).toLowerCase().includes(searchTerm))
     // )
-    ///// e === 검색 ===
+    ///// e ============ 검색 ============
 
     return(
         <>
@@ -67,7 +76,7 @@ export default function TabComponent(){
                 [] 2-2. 해당 index 값만 필터링하여 화면에 출력
                 [] 2-3. 검색 결과가 없을 경우 "검색 결과가 없습니다." 출력
             */}
-            <ul>
+            {/* <ul>
                 {extractedValues.length > 0
                     ? (
                         extractedValues[activeTab].map((data, index) => (
@@ -79,7 +88,7 @@ export default function TabComponent(){
                         <li>검색 결과가 없습니다.</li>
                     )
                 }
-            </ul>
+            </ul> */}
 
             <div className="tab-con-list">
                 {tabName.map((tab, index) => (

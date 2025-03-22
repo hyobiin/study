@@ -60,7 +60,7 @@ const tabData = {
             ],
             image: "img/250306_main.PNG",
             link: [
-                "https://handok.metapay-dev.co.kr/"
+                "https://www.tistory.com/"
             ],
             notice: "분기처리 삭제해야 했음",
             annotation: [
