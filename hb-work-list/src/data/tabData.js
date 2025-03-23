@@ -68,6 +68,32 @@ const tabData = {
             ],
             requestor: "250306"
         },
+        {
+            section: "서브",
+            modifyFiles: [
+                {
+                    type: "html",
+                    files: [
+                        "src>main.html"
+                    ]
+                },
+                {
+                    type: "js",
+                    files: [
+                        "src>main.js"
+                    ]
+                },
+            ],
+            image: "img/250306_main.PNG",
+            link: [
+                "https://www.tistory.com/"
+            ],
+            notice: "분기처리 삭제해야 했음",
+            annotation: [
+                "확인"
+            ],
+            requestor: "240507"
+        },
     ],
     homepage:[
         {

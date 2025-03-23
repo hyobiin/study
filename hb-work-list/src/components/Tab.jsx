@@ -20,20 +20,26 @@ export default function TabComponent(){
     const [searchTerm, setSearchTerm] = useState("");
     const searchInpRef = useRef(null);
 
+    const [filteredTabData, setFilteredTabData] = useState(tabData);
+
     // 검색 버튼 클릭시 검색어 설정
     const handleSearch = () => {
-        if (!searchInpRef.current || searchInpRef.current.value.trim() === "") return;
+        const keyword = searchInpRef.current.value.toLowerCase();
 
-        // setSearchTerm(searchInpRef.current.value.toLowerCase());
-        const filteredData = extractedValues[activeTab].map(tab =>
-            tab.filter(data => JSON.stringify(data).toLowerCase().includes(searchInpRef.current.value))
-        )
+        if (!searchInpRef.current || keyword.trim() === "") return;
+
+        setSearchTerm(keyword);
+        const filteredData = extractedValues[activeTab].map(tab =>{
+            const filteredTab = tab.filter(data => 
+                JSON.stringify(data).toLowerCase().includes(keyword)
+            );
+            return filteredTab.length > 0 ? filteredTab : null; // 빈배열은 나오지 않게
+        }).filter(tab => tab !== null); // null 값은 제외하고 필터링
+
         console.log("---------------------")
         console.log(searchInpRef.current.value)
         console.log(filteredData)
         console.log("---------------------")
-
-
     }
 
     // 검색어가 포함된 데이터만 필터링
@@ -89,6 +95,7 @@ export default function TabComponent(){
                     )
                 }
             </ul> */}
+
 
             <div className="tab-con-list">
                 {tabName.map((tab, index) => (
