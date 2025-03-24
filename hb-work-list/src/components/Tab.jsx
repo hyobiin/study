@@ -30,15 +30,19 @@ export default function TabComponent(){
 
         setSearchTerm(keyword);
         const filteredData = extractedValues[activeTab].map(tab =>{
-            const filteredTab = tab.filter(data => 
+            const filteredTab = tab.filter(data =>
                 JSON.stringify(data).toLowerCase().includes(keyword)
             );
             return filteredTab.length > 0 ? filteredTab : null; // 빈배열은 나오지 않게
         }).filter(tab => tab !== null); // null 값은 제외하고 필터링
 
+        // 검색 결과가 있는 데이터 배열만 필터링
+        const result =  extractedValues[activeTab].filter(data => data.some(value => value.includes(keyword)));
+
         console.log("---------------------")
         console.log(searchInpRef.current.value)
         console.log(filteredData)
+        console.log(result)
         console.log("---------------------")
     }
 
