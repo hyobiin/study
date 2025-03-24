@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "skipLibCheck": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "outDir": "dist",
+    // 타입스크립트 파일 코드의 문법을 엄격하게 검사할지 결정
+    "strict": true,
+    // 모듈의 전역변수를 감지하고 모듈화가 안되어 있을 경우 자동으로 컴파일시 추가
+    "moduleDetection": "force"
+  },
+  "include": ["src"]
+}
