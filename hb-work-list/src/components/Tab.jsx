@@ -18,16 +18,22 @@ export default function TabComponent(){
 
     ///// s ============ 검색 ============
     const [searchTerm, setSearchTerm] = useState("");
-    const [filteredResult, setFilteredResult] = useState("");
+    const [filteredResult, setFilteredResult] = useState(tabData[tabDataKey[activeTab]]); // handleSearch()에서 result 값 받아오기
     const searchInpRef = useRef(null);
 
     // 검색 버튼 클릭시 검색어를 가져와서 검색
     const handleSearch = () => {
         const keyword = searchInpRef.current.value.toLowerCase();
 
-        if (!searchInpRef.current || keyword.trim() === "") return;
+        if (!searchInpRef.current) return;
 
-        setSearchTerm(keyword);
+        setSearchTerm(keyword); // 검색어 업데이트
+
+        if(keyword.trim() === ""){
+            setFilteredResult(tabData[tabDataKey[activeTab]]);
+            return;
+        }
+
         const filteredData = extractedValues[activeTab].map(tab =>{
             const filteredTab = tab.filter(data =>
                 JSON.stringify(data).toLowerCase().includes(keyword)
@@ -58,6 +64,13 @@ export default function TabComponent(){
     console.log("setFilteredResult:", setFilteredResult);
     console.log("filteredResult.length:", filteredResult.length);
     console.log("------------e: 기본 출력------------");
+
+    // 엔터시 검색 함수 실행
+    const onKeyDown = (e) => {
+        if(e.key === 'Enter'){
+            handleSearch();
+        }
+    }
     ///// e ============ 검색 ============
 
     return(
@@ -73,18 +86,10 @@ export default function TabComponent(){
                 }
             </ul>
             <div className="search-box">
-                <input type="text" placeholder="검색어를 입력하세요" ref={searchInpRef}/>
+                <input type="text" placeholder="검색어를 입력하세요" ref={searchInpRef} onKeyDown={onKeyDown}/>
                 <button className="btn-search" onClick={handleSearch}>검색</button>
             </div>
-
-            {/* TODO_HB 검색 로직
-                [o] 1. 데이터를 배열로 가져오기 (검색 로직에 사용하기 위함)
-                [o] 1-1. 해당 탭 데이터만 배열로 가져오기
-                [o] 2. 버튼을 눌렀을 때 input value 값을 가져와서 있는지 없는지 비교
-                [o] 2-1. 값이 있으면 그 값이 있는 index를 찾아서 console로 출력
-                [] 2-2. 해당 index 값만 필터링하여 화면에 출력
-                [] 2-3. 검색 결과가 없을 경우 "검색 결과가 없습니다." 출력
-            */}
+            {/* 임시 노출 */}
             <ul>
                 {filteredResult.length > 0
                     ? (
@@ -138,7 +143,9 @@ export default function TabComponent(){
                                 </tr>
                             </thead>
                             <tbody>
-                                {tabData[tabDataKey[index]].map((data, dataIndex) => (
+                                {(searchTerm
+                                ? JSON.stringify(filteredResult)
+                                : tabData[tabDataKey[activeTab]].map((data, dataIndex) => (
                                     <tr key={dataIndex}>
                                         {
                                             activeTab == tabName.length - 1 ?
@@ -212,7 +219,7 @@ export default function TabComponent(){
                                             )
                                         }
                                     </tr>
-                                ))}
+                                )))}
                             </tbody>
                         </table>
                     </div>
