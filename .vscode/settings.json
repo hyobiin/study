@@ -1,0 +1,6 @@
+{
+    "editor.acceptSuggestionOnEnter": "on",
+    "editor.tabCompletion": "on",
+    "github.copilot.editor.enableAutoCompletions": true,
+    "github.copilot.inlineSuggest.enable": true
+}
