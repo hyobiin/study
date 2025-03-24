@@ -6,133 +6,189 @@
     <title>jsp</title>
     <link rel="stylesheet" href="../css/common.css">
     <link rel="stylesheet" href="https://hyobiin.github.io/study/work_log/css/common.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
 </head>
 <body>
     <div class="wrap">
         <h1>jsp</h1>
         <h2>ess-ui 프론트</h2>
-        <h3>paySlip.html</h3>
-        <div class="table_wrap">
-            <table>
-                <colgroup>
-                    <col width="35%">
-                    <col>
-                </colgroup>
-                <thead>
-                    <tr>
-                        <th>코드 및 속성</th>
-                        <th>설명</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>xmlns="http://www.w3.org/1999/xhtml"</td>
-                        <td><ul>
-                            <li>XHTML 문법을 따르도록 선언</li>
-                            <li>일반 HTML에서는 생략 가능</li>
-                        </ul></td>
-                    </tr>
-                    <tr>
-                        <td>xmlns:th="http://www.thymeleaf.org"</td>
-                        <td><ul>
-                            <li>Thymeleaf를 사용, 네임스페이스 선언</li>
-                            <li>th:text, th:if, th:each 같은 Thymeleaf 속성 사용 가능</li>
-                            <li>ex)<dl>
-                                <dt>&lt;p th:text="${message}"&gt;기본 텍스트&lt;/p&gt;</dt>
-                                <dd>동적으로 '기본 텍스트'를 뿌려줌</dd>
-                            </dl></li>
-                        </ul></td>
-                    </tr>
-                    <tr>
-                        <td>xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"</td>
-                        <td><ul>
-                            <li>Thymeleaf에서 템플릿 레이아웃을 사용</li>
-                            <li>부모(레이아웃) 템플릿과 자식(컨텐츠) 템플릿을 연결하는 기능</li>
-                            <li><dl>
-                                <dt>layout:decorate, layout:fragment 같은 속성을 사용 가능</dt>
-                                <dd>layout:decorate → 자식 템플릿이 사용할 부모(레이아웃) 파일을 지정</dd>
-                                <dd>layout:fragment → 부모(레이아웃)에서 채울 부분을 정의</dd>
-                            </dl></li>
-                        </ul></td>
-                    </tr>
-                    <tr>
-                        <td>layout:decorate="~{layout/default_layout}"</td>
-                        <td><ul>
-                            <li>기본 레이아웃을 적용하여 중복 코드 줄이기</li>
-                            <li><dl>
-                                <dt>부모-자식 이어주는 역할</dt>
-                                <dd>레이아웃(부모 템플릿): default_layout.html</dd>
-                                <dd>현재 페이지(자식 템플릿): layout:decorate 속성을 통해 default_layout.html을 상속받음</dd>
-                            </dl></li>
-                        </ul></td>
-                    </tr>
-                    <tr>
-                        <td>&lt;div layout:fragment="content"&gt;&lt;/div&gt;</td>
-                        <td><ul>
-                            <li>해당 속성이 있는 부분은 해당 페이지에서 동적으로 변경 됨</li>
-                            <li><dl>
-                                <dt>layout:fragment</dt>
-                                <dd>자식 템플릿이 부모 템플릿에 특정 영역을 채울 수 있도록 정의하는 속성</dd>
-                                <dd>동적으로 채움</dd>
-                            </dl></li>
-                        </ul></td>
-                    </tr>
-                    <tr>
-                        <td>&lt;script type="text/javascript" th:inline="javascript"&gt;</td>
-                        <td><ul>
-                            <li>서버 데이터를 자바스크립트 변수에 주입</li>
-                            <li><p>예제👇</p>
-                                <div class="expain_code">
-                                    <div>&lt;script type="text/javascript" th:inline="javascript"&gt; <br>
-                                        &nbsp;&nbsp;var username = /*[[${user.name}]]*/ "기본값"; <br>
-                                        &nbsp;&nbsp;var userId = /*[[${user.id}]]*/ 0; <br>
-                                        &lt;/script&gt;
-                                    </div>
-                                    <ul>
-                                        <li>서버에서 넘겨준 ${user.name}과 ${user.id}가 서버에서 넘겨준 데이터로 변환</li>
-                                        <li>var username = "홍길동"; <br>
-                                            var userId = 12345;
-                                        </li>
-                                        <li>/*[[ ]]*/ 문법을 사용하면 XSS(스크립트 공격)를 방지 → 안전한 데이터 출력 가능</li>
-                                    </ul>
-                                </div>
-                            </li>
-                        </ul></td>
-                    </tr>
-                    <tr>
-                        <td>th:src="@{...}"</td>
-                        <td><ul>
-                            <li>Thymeleaf가 동적으로 경로를 변환하여 JavaScript 파일을 불러옴</li>
-                            <li>브라우저에서는 src="/js/cmmn/Chart.js" 이렇게 보임</li>
-                            <li><dl>
-                                <dt>장점</dt>
-                                <dd>컨텍스트 경로(Context Path) 자동 적용 (유지보수 편리)</dd>
-                                <dd><p>예제👇</p>
-                                    <div class="expain_code pb0">
-                                        <div>th:src="@{/js/cmmn/Chart.js}" → src="/contextPath/js/cmmn/Chart.js" <br>
-                                            가정) contextPath가 myapp이라면 → src="/myapp/js/cmmn/Chart.js" 으로 출력
+        <div class="accor_wrap">
+            <h3>paySlip.html</h3>
+            <div class="table_wrap">
+                <table>
+                    <colgroup>
+                        <col width="35%">
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>코드 및 속성</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>xmlns="http://www.w3.org/1999/xhtml"</td>
+                            <td><ul>
+                                <li>XHTML 문법을 따르도록 선언</li>
+                                <li>일반 HTML에서는 생략 가능</li>
+                            </ul></td>
+                        </tr>
+                        <tr>
+                            <td>xmlns:th="http://www.thymeleaf.org"</td>
+                            <td><ul>
+                                <li>Thymeleaf를 사용, 네임스페이스 선언</li>
+                                <li>th:text, th:if, th:each 같은 Thymeleaf 속성 사용 가능</li>
+                                <li>ex)<dl>
+                                    <dt>&lt;p th:text="${message}"&gt;기본 텍스트&lt;/p&gt;</dt>
+                                    <dd>동적으로 '기본 텍스트'를 뿌려줌</dd>
+                                </dl></li>
+                            </ul></td>
+                        </tr>
+                        <tr>
+                            <td>xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"</td>
+                            <td><ul>
+                                <li>Thymeleaf에서 템플릿 레이아웃을 사용</li>
+                                <li>부모(레이아웃) 템플릿과 자식(컨텐츠) 템플릿을 연결하는 기능</li>
+                                <li><dl>
+                                    <dt>layout:decorate, layout:fragment 같은 속성을 사용 가능</dt>
+                                    <dd>layout:decorate → 자식 템플릿이 사용할 부모(레이아웃) 파일을 지정</dd>
+                                    <dd>layout:fragment → 부모(레이아웃)에서 채울 부분을 정의</dd>
+                                </dl></li>
+                            </ul></td>
+                        </tr>
+                        <tr>
+                            <td>layout:decorate="~{layout/default_layout}"</td>
+                            <td><ul>
+                                <li>기본 레이아웃을 적용하여 중복 코드 줄이기</li>
+                                <li><dl>
+                                    <dt>부모-자식 이어주는 역할</dt>
+                                    <dd>레이아웃(부모 템플릿): default_layout.html</dd>
+                                    <dd>현재 페이지(자식 템플릿): layout:decorate 속성을 통해 default_layout.html을 상속받음</dd>
+                                </dl></li>
+                            </ul></td>
+                        </tr>
+                        <tr>
+                            <td>&lt;div layout:fragment="content"&gt;&lt;/div&gt;</td>
+                            <td><ul>
+                                <li>해당 속성이 있는 부분은 해당 페이지에서 동적으로 변경 됨</li>
+                                <li><dl>
+                                    <dt>layout:fragment</dt>
+                                    <dd>자식 템플릿이 부모 템플릿에 특정 영역을 채울 수 있도록 정의하는 속성</dd>
+                                    <dd>동적으로 채움</dd>
+                                </dl></li>
+                            </ul></td>
+                        </tr>
+                        <tr>
+                            <td>&lt;script type="text/javascript" th:inline="javascript"&gt;</td>
+                            <td><ul>
+                                <li>서버 데이터를 자바스크립트 변수에 주입</li>
+                                <li><p>예제👇</p>
+                                    <div class="expain_code">
+                                        <div>&lt;script type="text/javascript" th:inline="javascript"&gt; <br>
+                                            &nbsp;&nbsp;var username = /*[[${user.name}]]*/ "기본값"; <br>
+                                            &nbsp;&nbsp;var userId = /*[[${user.id}]]*/ 0; <br>
+                                            &lt;/script&gt;
                                         </div>
+                                        <ul>
+                                            <li>서버에서 넘겨준 ${user.name}과 ${user.id}가 서버에서 넘겨준 데이터로 변환</li>
+                                            <li>var username = "홍길동"; <br>
+                                                var userId = 12345;
+                                            </li>
+                                            <li>/*[[ ]]*/ 문법을 사용하면 XSS(스크립트 공격)를 방지 → 안전한 데이터 출력 가능</li>
+                                        </ul>
                                     </div>
-                                </dd>
-                            </dl></li>
-                        </ul></td>
-                    </tr>
-                    <tr>
-                        <td>&lt;h2 th:text="#{metapay.ess.salary.statement.inquiry}"&gt;급여명세서 조회&lt;/h2&gt;</td>
-                        <td><ul>
-                            <li><dl>
-                                <dt>th:text</dt>
-                                <dd>동적으로 텍스트 생성</dd>
-                            </dl></li>
-                            <li><dl>
-                                <dt>#{key} <span class="spring">spring 문법</span></dt>
-                                <dd>Spring의 messages.properties 파일 사용 (다국어 지원)</dd>
-                            </dl></li>
-                            <li>messages.ko.properties와 messages.en.properties에서 metapay.ess.salary.statement.inquiry 검색</li>
-                        </ul></td>
-                    </tr>
-                </tbody>
-            </table>
+                                </li>
+                            </ul></td>
+                        </tr>
+                        <tr>
+                            <td>th:src="@{...}"</td>
+                            <td><ul>
+                                <li>Thymeleaf가 동적으로 경로를 변환하여 JavaScript 파일을 불러옴</li>
+                                <li>브라우저에서는 src="/js/cmmn/Chart.js" 이렇게 보임</li>
+                                <li><dl>
+                                    <dt>장점</dt>
+                                    <dd>컨텍스트 경로(Context Path) 자동 적용 (유지보수 편리)</dd>
+                                    <dd><p>예제👇</p>
+                                        <div class="expain_code pb0">
+                                            <div>th:src="@{/js/cmmn/Chart.js}" → src="/contextPath/js/cmmn/Chart.js" <br>
+                                                가정) contextPath가 myapp이라면 → src="/myapp/js/cmmn/Chart.js" 으로 출력
+                                            </div>
+                                        </div>
+                                    </dd>
+                                </dl></li>
+                            </ul></td>
+                        </tr>
+                        <tr>
+                            <td>&lt;h2 th:text="#{metapay.ess.salary.statement.inquiry}"&gt;급여명세서 조회&lt;/h2&gt;</td>
+                            <td><ul>
+                                <li><dl>
+                                    <dt>th:text</dt>
+                                    <dd>동적으로 텍스트 생성</dd>
+                                </dl></li>
+                                <li><dl>
+                                    <dt>#{key} <span class="spring">spring 문법</span></dt>
+                                    <dd>Spring의 messages.properties 파일 사용 (다국어 지원)</dd>
+                                </dl></li>
+                                <li>messages.ko.properties와 messages.en.properties에서 metapay.ess.salary.statement.inquiry 검색</li>
+                            </ul></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="accor_wrap">
+            <h3>schxpnReqst.html - 복리후생/학자금/학자금 신청</h3>
+            <div class="table_wrap">
+                <table>
+                    <colgroup>
+                        <col width="35%">
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>코드 및 속성</th>
+                            <th>설명</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>&lt;input type="hidden" id="viewMode" name="viewMode" th:value="${viewMode}" /&gt;</td>
+                            <td><ul>
+                                <li>서버에서 viewMode 값을 Thymeleaf가 렌더링 후 JavaScript에서 사용 가능</li>
+                                <li><dl>
+                                    <dt>th:value="${변수}"</dt>
+                                    <dd>서버 데이터에서Thymeleaf에서 전달한 값을 HTML value 속성에 자동으로 넣어주는 기능</dd>
+                                    <dd>즉, 값을 서버에서 동적 바인딩 해줌</dd>
+                                </dl></li>
+                            </ul></td>
+                        </tr>
+                        <tr>
+                            <td>&lt;th:block layout:fragment="sanctnPop" th:include="@{content/wlfare/sanctnPop}"&gt;&lt;/th:block&gt;</td>
+                            <td><ul>
+                                <li>해당 코드 자리에 content/wlfare/sanctnPop 페이지에서 layout:fragment="sanctnPop"이 있는 부분을 불러옴</li>
+                                <li>❗ 만약 layout:fragment="sanctnPop" 라고 써져있는 코드가 없다면, 파일 전체를 불러옴</li>
+                                <li><dl>
+                                    <dt>layout:fragment 와 th:include</dt>
+                                    <dd><p>예제👇</p>
+                                        <div class="expain_code pb0">
+                                            <div>[include한 파일 내 코드] <br>
+                                                <br>✅ fragment가 있을 경우 ⭕ => 해당 부분만 불러옴 <br>
+                                                &lt;th:block layout:fragment="sanctnPop"&gt; <br>
+                                                &nbsp;&nbsp;&lt;p&gt;불러오는 팝업&lt;/p&gt; <br>
+                                                &lt;/th:block&gt;
+                                                <br><br>✅ fragment가 없을 경우 ❌ => 파일 전체를 불러옴 <br>
+                                                &lt;div&gt; <br>
+                                                &nbsp;&nbsp;&lt;p&gt;불러오는 팝업&lt;/p&gt; <br>
+                                                &lt;/div&gt;
+                                            </div>
+                                        </div></dd>
+                                </dl></li>
+                            </ul></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <h2>Thymeleaf 속성</h2>
         <div class="table_wrap">
@@ -287,9 +343,44 @@
                             <dd>th:fragment를 사용해 재사용 가능한 템플릿 조각을 정의하고, th:replace를 사용해 호출함</dd>
                         </dl></td>
                     </tr>
+                    <tr>
+                        <td>th:inline</td>
+                        <td><ul>
+                            <li>서버 데이터를 JavaScript로 전달할 때 사용</li>
+                            <li>Thymeleaf 변수를 JavaScript에서 사용</li>
+                            <li>JSON 변환 가능 -> API 연동시 유용</li>
+                            <li>Thymeleaf에서 JavaScript를 사용할 때 필수적인 기능</li>
+                        </ul></td>
+                        <td>&lt;script type="text/javascript" th:inline="javascript"&gt; <br>
+                            &nbsp;&nbsp;var username = /*[[${user.name}]]*/ "기본값"; <br>
+                            &nbsp;&nbsp;var userId = /*[[${user.id}]]*/ 0; <br>
+                            &lt;/script&gt;</td>
+                    </tr>
+                    <tr>
+                        <td>th:value</td>
+                        <td>서버 데이터를 동적으로 바인딩</td>
+                        <td>
+                            [html] <br>
+                            &lt;input type="text" th:value="${userName}" /&gt; <br><br>
+                            [java] <br>
+                            &lt;script&gt; <br>
+                                model.addAttribute("userName", "홍길동"); <br>
+                            &lt;/script&gt; <br><br>
+                            [html] 렌더링 후 / 클라이언트 화면<br>
+                            &lt;input type="text" value="홍길동" /&gt;
+                        </td>
+                    </tr>
+                    <!--// 속성 하단 -->
                 </tbody>
             </table>
         </div>
     </div>
+
+    <script>
+        // 아코디언
+        $('.accor_wrap h3').on('click', function(){
+            $(this).siblings('.table_wrap').slideToggle();
+        });
+    </script>
 </body>
 </html>

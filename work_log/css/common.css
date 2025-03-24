@@ -79,6 +79,12 @@ td dl dd .php{font-size:11px;}
 .expain_code > div{padding-bottom:10px;line-height:1.5;}
 .expain_code.pb0 > div{padding-bottom:0;}
 
+/* 아코디언 */
+.accor_wrap{border-bottom:1px solid #333;}
+.accor_wrap h3{display:inline-block;}
+.accor_wrap h3::after{content:'클릭🔍';margin-left:8px;font-size:12px;padding:3px;border:1.5px solid #555;border-radius:5px;background:#eee;vertical-align:middle;cursor:pointer;}
+.accor_wrap .table_wrap{display:none;margin:0 0 10px;}
+
 /* @font-face {
     font-family: 'FH Oscar v2';
     src: url('https://cdn.prod.website-files.com/6501e17b507eeeaff049afdd/67916a6d36a7c8f628498efa_FHOscar-Bold.otf') format('opentype');
