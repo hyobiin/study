@@ -18,11 +18,10 @@ export default function TabComponent(){
 
     ///// s ============ 검색 ============
     const [searchTerm, setSearchTerm] = useState("");
+    const [filteredResult, setFilteredResult] = useState("");
     const searchInpRef = useRef(null);
 
-    const [filteredTabData, setFilteredTabData] = useState(tabData);
-
-    // 검색 버튼 클릭시 검색어 설정
+    // 검색 버튼 클릭시 검색어를 가져와서 검색
     const handleSearch = () => {
         const keyword = searchInpRef.current.value.toLowerCase();
 
@@ -39,26 +38,26 @@ export default function TabComponent(){
         // 검색 결과가 있는 데이터 배열만 필터링
         const result =  extractedValues[activeTab].filter(data => data.some(value => value.includes(keyword)));
 
-        console.log("---------------------")
-        console.log(searchInpRef.current.value)
-        console.log(filteredData)
-        console.log(result)
-        console.log("---------------------")
-    }
+        setFilteredResult(result); // 전역변수로 사용할 수 있게 대입
 
-    // 검색어가 포함된 데이터만 필터링
-    const isArray = Array.isArray(tabData); // 배열인지 확인
+        console.log("------------s: 버튼 클릭------------");
+        console.log(searchInpRef.current.value);
+        console.log(filteredData);
+        console.log(result);
+        console.log("------------e: 버튼 클릭------------");
+    }
 
     const extractedValues = Object.values(tabData).map(data =>
         data.map(value => Object.values(value))
     )
-    console.log(extractedValues[activeTab]);
 
-    // console.log(`화깅ㄴ`, extractedValues[activeTab], Array.isArray(extractedValues[activeTab]))
-
-    // const filteredData = Object.values(tabData).map(tab =>
-    //     tab.filter(data => JSON.stringify(data).toLowerCase().includes(searchTerm))
-    // )
+    console.log("------------s: 기본 출력------------");
+    console.log(`extractedValues[activeTab]: ${extractedValues[activeTab]}`);
+    console.log(`JSON.stringify.(extractedValues[activeTab]): ${JSON.stringify(extractedValues[activeTab])}`); // 객체나 배열을 JSON 문자열로 변환
+    console.log(`extractedValues[activeTab].length: ${extractedValues[activeTab].length}`);
+    console.log("setFilteredResult:", setFilteredResult);
+    console.log("filteredResult.length:", filteredResult.length);
+    console.log("------------e: 기본 출력------------");
     ///// e ============ 검색 ============
 
     return(
@@ -80,25 +79,25 @@ export default function TabComponent(){
 
             {/* TODO_HB 검색 로직
                 [o] 1. 데이터를 배열로 가져오기 (검색 로직에 사용하기 위함)
-                [] 1-1. 해당 탭 데이터만 배열로 가져오기
-                [] 2. 버튼을 눌렀을 때 input value 값을 가져와서 있는지 없는지 비교
-                [] 2-1. 값이 있으면 그 값이 있는 index를 찾아서 console로 출력
+                [o] 1-1. 해당 탭 데이터만 배열로 가져오기
+                [o] 2. 버튼을 눌렀을 때 input value 값을 가져와서 있는지 없는지 비교
+                [o] 2-1. 값이 있으면 그 값이 있는 index를 찾아서 console로 출력
                 [] 2-2. 해당 index 값만 필터링하여 화면에 출력
                 [] 2-3. 검색 결과가 없을 경우 "검색 결과가 없습니다." 출력
             */}
-            {/* <ul>
-                {extractedValues.length > 0
+            <ul>
+                {filteredResult.length > 0
                     ? (
-                        extractedValues[activeTab].map((data, index) => (
+                        filteredResult.map((data, index) => (
                             <li key={index}>
-                                {data}
+                                <React.Fragment>{JSON.stringify(data)}</React.Fragment>
                             </li>
                         ))
                     ) : (
                         <li>검색 결과가 없습니다.</li>
                     )
                 }
-            </ul> */}
+            </ul>
 
 
             <div className="tab-con-list">
