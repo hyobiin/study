@@ -3,7 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://hyobiin.github.io/study/",
+  "homepage": "https://hyobiin.github.io/study/hb-work-list",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
