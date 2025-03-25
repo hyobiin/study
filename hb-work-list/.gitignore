@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# 제외할 항목이 아닌 build 폴더는 반드시 git에 포함되어야 합니다.
+!build/
