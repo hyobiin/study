@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sticky</title>
+    <style>
+        body {position:relative;background-color:transparent;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;-moz-osx-font-smoothing:grayscale;color:#000;}
+        body.mix{background-color: #000;}
+        body.black{background-color: #000;}
+        body.mix .container{background-color: #fff;}
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,p,button,iframe,th,td,a,select,input,textarea{margin:0;padding:0;font-family:'Pretendard', 'Malgun Gothic', '맑은 고딕', "돋움", sans-serif;font-weight:400;line-height:1.4;font-size:inherit;box-sizing:border-box}
+        body.layer_activated{overflow: hidden;}
+        var {font-style:normal;}
+        article,aside,details,figcaption,figure,footer,header,nav,section,summary,main{display:block;margin:0;padding:0;}
+        img,fieldset,iframe{border:0;}
+        li{list-style:none;}
+        button{overflow:visible;border:0;color:inherit;line-height:inherit;background:#fff;cursor:pointer;}
+        table{table-layout:fixed;border-collapse:collapse;border-spacing:0;width:100%;}
+        hr{display:none;}
+        legend{position:absolute; left:-9999px; top:0}
+        :focus-visible { outline: 0;}
+        .sr_only, caption {position:absolute; top:-9999px; font-size:0; height:0;}
+        select, input, textarea{color:#000;border-radius:0;border:0;-webkit-appearance:none;}
+        i, em, u, cite {font-style:normal;}
+        strong{font-weight:700;}
+        b{font-weight:400;}
+        img{max-width:100%;border:0;vertical-align:middle;}
+        a{color:#000;text-decoration:none;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+        address{font-style:normal;}
+        textarea{overflow-y:auto;resize:none;display:block}
+
+        .wrap{background:#333;}
+        /* 피씨 */
+        .song-txt{padding:150px 20px;font-size:50px;font-weight:700;}
+        .song-wrap{overflow:unset;}
+        .song-wrap .inner{max-width:1440px;margin:0 auto;}
+        .song-wrap .tit-box{position:sticky;top:70px;left:0;padding-bottom:120px;}
+        .song-wrap .tit-box strong{font-family:'tj-medium';font-size:80px;color:#fff;line-height:104px;letter-spacing:-.03em;}
+        .song-wrap .tit-box p{padding-top:12px;font-size:32px;font-weight:300;color:#fff;line-height:42px;letter-spacing:-.02em;}
+        .song-wrap .card-list-box{position:relative;display:flex;flex-direction:column;align-items:center;}
+        .song-wrap .card-list-box li{width:500px;height:770px;margin:-50px 160px 0 0;padding:30px;border:1.5px solid #bbb;border-radius:24px;background:#fff;}
+        .song-wrap .card-list-box li:nth-child(2n){margin:0 0 0 auto;}
+        /* .song-wrap .card-list-box li:nth-child(2n){margin:-220px 0 0 auto;} */
+        .song-wrap .card-list-box li::before{content:'';display:block;width:440px;height:520px;border-radius:8px;background:url(https://hyobiin.github.io/study/work_log/images/admin.PNG) no-repeat 50% 50% / 100%;}
+        .song-wrap .card-list-box li strong{font-family:'tj-medium'; display:block;padding:40px 0 16px;font-size:38px;font-weight:500;line-height:48px;letter-spacing:-.02em;}
+        .song-wrap .card-list-box li span{position:relative;font-size:22px;font-weight:500;line-height:26.25px;letter-spacing:-.03em;}
+        .song-wrap .card-list-box li p{padding-top:8px;font-size:16px;line-height:24px;letter-spacing:-.02em;}
+        .song-wrap .card-list-box .card1{margin-top:0;}
+
+        @media all and (max-width:1450px) {
+            .song-wrap .card-list-box li{margin-right:25%;}
+        }
+
+        /* 모바일 */
+        @media all and (max-width:1290px) {
+            .song-wrap .tit-box{position:unset;padding-bottom:80px;}
+            .song-wrap .tit-box strong{font-size:40px;font-weight:500;line-height:50px;}
+            .song-wrap .tit-box p{padding-top:5px;font-size:16px;line-height:24px;}
+            .song-wrap .card-list-box{gap:130px;}
+            .song-wrap .card-list-box li{width:100%;height:auto;margin:0;padding:20.52px;}
+            .song-wrap .card-list-box li:nth-child(2n){margin:0;}
+            .song-wrap .card-list-box li::before{width:100%;height:auto;margin:0 auto;padding-top:100%;}
+            .song-wrap .card-list-box li strong{padding:27px 0 10px;font-size:26px;line-height:36px;}
+            .song-wrap .card-list-box li span{font-size:18px;line-height:28px;}
+            .song-wrap .card-list-box li span::after{width:17.78px;height:17.78px;right:-20px;bottom:5px;}
+            .song-wrap .card-list-box li p{padding-top:5px;font-size:14px;line-height:22px;}
+        }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <div class="test" style="height:600px;">위</div>
+        <div class="content">
+            <div class="song-wrap">
+                <div class="inner">
+                    <div class="tit-box">
+                        <strong>언제 가도 꿀잼 보장! <br> test</strong>
+                        <p>노래 하고 게임하고 댄스 타임까지 <br> 다양한 재미를 찾아보세요</p>
+                    </div>
+                    <ul class="card-list-box">
+                        <li class="card1">
+                            <strong>퍼펙트스코어</strong>
+                            <span>도전을 부르는 재미있는 노래 채점 기능!</span>
+                            <p>음정과 박자, 올림음, 내림음을 정확히 맞춰야 점수 획득~<br>  재미있지만 어려운 90점 넘기에 도전해보세요</p>
+                        </li>
+                        <li class="card2">
+                            <strong>퍼펙트스코어노래배틀</strong>
+                            <span>노래하고 선물도 받고!</span>
+                            <p>노래 점수가 80점 이상이면 실시간 랜덤으로 기프티콘을 쏩니다 <br> 월별 1등에게는 더 큰 선물을 드려요</p>
+                        </li>
+                        <li class="card3">
+                            <strong>클럽기능</strong>
+                            <span>버튼만 누르면 무아지경 댄스타임!</span>
+                            <p>음악부터 영상, 조명까지 핫한 클럽으로 변신! <br> 한 번 해보면 완전 빠져들걸요?</p>
+                        </li>
+                        <li class="card4">
+                            <strong>안녕! 클레오파트라게임</strong>
+                            <span>돌고래 뺨치는 고음 최강자는 누구?</span>
+                            <p>SNS에서 대유행한 바로 그 게임! <br>  노래방 기계가 정밀 평가해주니 더 꿀잼이에요</p>
+                        </li>
+                        <li class="card5">
+                            <strong>복불복게임</strong>
+                            <span>짜릿한 랜덤 벌칙 게임! 나만 아니면 돼~</span>
+                            <p>벌칙이나 미션을 내 맘대로 바꿀 수 있어요 <br> 노래하는 재미에 게임의 스릴까지 즐겨보세요</p>
+                        </li>
+                        <li class="card6">
+                            <strong>영상녹화</strong>
+                            <span>노래방에서 고음질 커버곡 완성!</span>
+                            <p>고음질 녹음은 물론 노래하는 모습, 가사까지 완벽한 커버곡 영상을 <br> 만들 수 있어요 스마트폰으로 전송받아 SNS에 바로 공유해보세요!</p>
+                        </li>
+                        <li class="card7">
+                            <strong>노래방에서 라방 Go!</strong>
+                            <span>노래방이 ‘라이브 방송 스튜디오’가 된다!</span>
+                            <p>노래방에서 노래 실력도 뽐내고 유저들과 소통도 하고 <br>
+                                별풍선도 받아보세요~  스타 BJ에 도전 가즈아!</p>
+                        </li>
+                        <li class="card8">
+                            <strong>블루투스</strong>
+                            <span>전세계 모든 노래 OK!</span>
+                            <p>노래방기기와 스마트폰이 블루투스로 연결되어 전세계 모든 노래가 있는 <br>  유튜브 노래를 노래방의 파워풀한 사운드로 즐길 수 있어요!</p>
+                        </li>
+                        <li class="card9">
+                            <strong>TJ노래방(노래방용)</strong>
+                            <span>내 스마트폰이 노래방 리모컨으로!</span>
+                            <p>TJ노래방(노래방용) 앱으로 노래방 리모컨, 녹음곡 전송, 곡 검색, <br> 애창곡 등록, 문자 화면 표출을 하며 노래하는 즐거움을 더해보세요</p>
+                        </li>
+                        <li class="card10">
+                            <strong>악보</strong>
+                            <span>노래 잘 부르는 꿀팁!</span>
+                            <p>정확한 박자와 음정을 한 눈에 알 수 있어 생소한 노래도 쉽게 <br> 부를 수 있어요</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div style="height:1000px;">아래</div>
+    </div>
+
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // card1 단독 사용시
+        // gsap.to(".card-list-box .card1",{
+        //     scale:1.5,
+        //     scrollTrigger: {
+        //         trigger: ".card-list-box",
+        //         start: "top bottom",
+        //         scrub: true,
+        //         markers: true
+        //     }
+        // });
+
+        // card1 ~ 여러개 순차적으로 커지는 애니메이션 사용시
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".card-list-box",
+                start: "top bottom",
+                scrub: true,
+                markers: true
+            }
+        });
+
+        tl.to(".card1", {scale: 1.3})
+            .to(".card2", {scale: 1.3}, "-=0.38") // -0.3은 이전 애니메이션이 끝나고 .3초 뒤에 실행하라
+            .to(".card1", {scale: 1}, "-=0.38")
+            .to(".card3", {scale: 1.3}, "-=0.6")
+            .to(".card4", {scale: 1.3}, "-=0.7");
+
+        tl.duration(0.5); // 모든 tl 애니메이션 2초 동안 진행
+    </script>
+</body>
+</html>

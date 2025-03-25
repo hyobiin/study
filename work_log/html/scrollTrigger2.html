@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스크롤 트리거 test</title>
+    <style>
+        body {position:relative;background-color:transparent;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;-moz-osx-font-smoothing:grayscale;color:#000;}
+        body.mix{background-color: #000;}
+        body.black{background-color: #000;}
+        body.mix .container{background-color: #fff;}
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,p,button,iframe,th,td,a,select,input,textarea{margin:0;padding:0;font-family:'Pretendard', 'Malgun Gothic', '맑은 고딕', "돋움", sans-serif;font-weight:400;line-height:1.4;font-size:inherit;box-sizing:border-box}
+        body.layer_activated{overflow: hidden;}
+        var {font-style:normal;}
+        article,aside,details,figcaption,figure,footer,header,nav,section,summary,main{display:block;margin:0;padding:0;}
+        img,fieldset,iframe{border:0;}
+        li{list-style:none;}
+        button{overflow:visible;border:0;color:inherit;line-height:inherit;background:#fff;cursor:pointer;}
+        table{table-layout:fixed;border-collapse:collapse;border-spacing:0;width:100%;}
+        hr{display:none;}
+        legend{position:absolute; left:-9999px; top:0}
+        :focus-visible { outline: 0;}
+        .sr_only, caption {position:absolute; top:-9999px; font-size:0; height:0;}
+        select, input, textarea{color:#000;border-radius:0;border:0;-webkit-appearance:none;}
+        i, em, u, cite {font-style:normal;}
+        strong{font-weight:700;}
+        b{font-weight:400;}
+        img{max-width:100%;border:0;vertical-align:middle;}
+        a{color:#000;text-decoration:none;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+        address{font-style:normal;}
+        textarea{overflow-y:auto;resize:none;display:block}
+
+        .wrap{background:#333;}
+
+        .dis_flex{display:flex;height:1500px;}
+        .left{flex:1;background:#fff;}
+        .left .img_box{width:100%;height:500px;background:url(https://co1127.shiningcorp.com/sh_img/include/inc03/img/img01.jpg);background-size:cover;}
+        .right{flex:1;}
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <div style="height:600px;">위</div>
+        <div class="dis_flex">
+            <div class="left">
+                <div class="img_box"></div>
+            </div>
+            <div class="right">
+                <ul class="test">
+                    <li style="height:500px;border:1px solid #333;">1</li>
+                    <li style="height:500px;border:1px solid #333;">2</li>
+                    <li style="height:500px;border:1px solid #333;">3</li>
+                    <li style="height:500px;border:1px solid #333;">4</li>
+                    <li style="height:500px;border:1px solid #333;">5</li>
+                </ul>
+            </div>
+        </div>
+        <div style="height:1000px;">아래</div>
+    </div>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        let panels = ScrollTrigger.create({
+            trigger: ".left",
+            start: "top top+=20px",
+            end: "bottom bottom+=20px",
+            pin: true,
+            markers: true
+        })
+
+        gsap.to(".test", {
+            y: "-200%", // 리스트를 위로 이동
+            ease: "none",
+            scrollTrigger: {
+                trigger: ".right",
+                start: "top center",
+                end: "bottom top",
+                scrub: true, // 스크롤 속도에 맞춰 움직이게 설정
+                pin: true // 오른쪽 영역을 고정
+            }
+        });
+    </script>
+</body>
+</html>

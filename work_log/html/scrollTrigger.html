@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스크롤 트리거 test</title>
+    <style>
+        body {position:relative;background-color:transparent;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;-moz-osx-font-smoothing:grayscale;color:#000;}
+        body.mix{background-color: #000;}
+        body.black{background-color: #000;}
+        body.mix .container{background-color: #fff;}
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,p,button,iframe,th,td,a,select,input,textarea{margin:0;padding:0;font-family:'Pretendard', 'Malgun Gothic', '맑은 고딕', "돋움", sans-serif;font-weight:400;line-height:1.4;font-size:inherit;box-sizing:border-box}
+        body.layer_activated{overflow: hidden;}
+        var {font-style:normal;}
+        article,aside,details,figcaption,figure,footer,header,nav,section,summary,main{display:block;margin:0;padding:0;}
+        img,fieldset,iframe{border:0;}
+        li{list-style:none;}
+        button{overflow:visible;border:0;color:inherit;line-height:inherit;background:#fff;cursor:pointer;}
+        table{table-layout:fixed;border-collapse:collapse;border-spacing:0;width:100%;}
+        hr{display:none;}
+        legend{position:absolute; left:-9999px; top:0}
+        :focus-visible { outline: 0;}
+        .sr_only, caption {position:absolute; top:-9999px; font-size:0; height:0;}
+        select, input, textarea{color:#000;border-radius:0;border:0;-webkit-appearance:none;}
+        i, em, u, cite {font-style:normal;}
+        strong{font-weight:700;}
+        b{font-weight:400;}
+        img{max-width:100%;border:0;vertical-align:middle;}
+        a{color:#000;text-decoration:none;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+        address{font-style:normal;}
+        textarea{overflow-y:auto;resize:none;display:block}
+
+        .wrap{background:#333;}
+
+        .dis_flex{display:flex;height:1500px;}
+        .left{flex:1;background:#fff;}
+        .left .img_box{width:100%;height:500px;background:url(https://co1127.shiningcorp.com/sh_img/include/inc03/img/img01.jpg);background-size:cover;}
+        .right{flex:1;}
+
+        /* #inc03 .r_cont .cont01{background:url(https://co1127.shiningcorp.com/sh_img/include/inc03/img/img01.jpg);background-size:cover}
+        #inc03 .l_cont .cont02{background:url(https://co1127.shiningcorp.com/sh_img/include/inc03/img/img02.jpg);background-size:cover}
+        #inc03 .r_cont .cont03{background:url(https://co1127.shiningcorp.com/sh_img/include/inc03/img/img03.jpg);background-size:cover} */ */
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <div class="test" style="height:600px;">위</div>
+        <div class="dis_flex">
+            <div class="left">
+                <div class="img_box"></div>
+            </div>
+            <div class="right"></div>
+        </div>
+        <div style="height:1000px;">아래</div>
+    </div>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // let panels = gsap.utils.toArray(".item");
+
+
+        const tl = gsap.timeline();
+        let panels = ScrollTrigger.create({
+            trigger: ".left", // 트리거하는 요소
+            start: "top top", // 시작 위치 (트리거요소, 뷰포트 스크롤지점) => 트리거의 요소(값이)가 뷰포트의 상단(값)에 닿으면 시작
+            end: "bottom bottom", // 끝나는 지점은 뷰포트의 하단
+            // end: "bottom bottom",
+            // endTrigger: '.txt_container', // 끝나는 지점은 다른 요소 지정
+            pin: true, // 트리거 작동시 핀 고정
+            scrub: 0.5, // 스크롤 속도
+            pinSpacing: false, // 핀 지정 간격 자동
+            markers: true, // 디버깅용 마커
+            onEnter: () => { // 요소가 트리거에 진입하면 실행할 콜백함수
+                // gsap.to(images, { opacity: 1, zIndex: 1, duration: 0.7 });
+                console.log('요소가 뷰포트에 들어옴');
+                tl.to('.img_box', { scale:1.5, duration:1.5, transformOrigin:"left top"}) // scale이 커져도 사진이 뷰포트에서 안짤리게
+                    // .to('.img_box', { rotate:360, duration:1}); // 이렇게 쓰면 순차적으로 scale 다음에 rotate 실행
+                // tl.to('.img_box', { scale:1.5, duration:1.5, rotate:360}); // 이렇게 쓰면 동시에 scale과 rotate 실행
+            },
+            onLeave: () => {
+                console.log('요소가 뷰포트에서 나감');
+                tl.to('.img_box', { scale:1, duration:1.5});
+            },
+            onEnterBack: () => {
+                console.log('요소가 다시 뷰포트에 들어옴 (뒤로 스크롤)');
+                tl.to('.img_box', { scale:1.5, duration:1.5, transformOrigin:"left top"})
+            },
+            onLeaveBack: () => {
+                console.log('요소가 위로 스크롤 되어서 화면에서 사라짐');
+                tl.to('.img_box', { scale:1, duration:1.5});
+            },
+        });
+
+        console.log(panels.pin);
+    </script>
+</body>
+</html>
