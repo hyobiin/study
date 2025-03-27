@@ -9,7 +9,7 @@
         body.mix{background-color: #000;}
         body.black{background-color: #000;}
         body.mix .container{background-color: #fff;}
-        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,p,button,iframe,th,td,a,select,input,textarea{margin:0;padding:0;font-family:'Pretendard', 'Malgun Gothic', '맑은 고딕', "돋움", sans-serif;font-weight:400;line-height:1.4;font-size:inherit;box-sizing:border-box}
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,p,button,iframe,th,td,a,select,input,textarea{margin:0;padding:0;font-family:'Pretendard', 'Malgun Gothic', '맑은 고딕', "돋움", sans-serif;font-weight:400;line-height:1.4;font-size:inherit;/*box-sizing:border-box*/}
         body.layer_activated{overflow: hidden;}
         var {font-style:normal;}
         article,aside,details,figcaption,figure,footer,header,nav,section,summary,main{display:block;margin:0;padding:0;}
@@ -33,10 +33,10 @@
         .wrap{background:#333;}
 
         .top{height:1600px;}
-        .section1{overflow:hidden;height:100vh;background:#ccc;}
+        .section1{overflow:hidden;max-height:100% !important;background:#ccc;}
         .list{display:flex;gap:30px;}
         .list li{flex-shrink:0;width:500px;}
-        .section2{height:500px;}
+        .section2{height:1000px;background:#c13457;}
         .section3{height:500px;}
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
@@ -52,6 +52,7 @@
                 <li><img src="https://co1127.shiningcorp.com/sh_img/include/inc03/img/img03.jpg" alt=""></li>
                 <li><img src="https://hyobiin.github.io/study/work_log/images/admin.PNG" alt=""></li>
                 <li><img src="https://co1127.shiningcorp.com/sh_img/include/inc03/img/img02.jpg" alt=""></li>
+                <!-- <li><img src="https://hyobiin.github.io/study/work_log/images/admin.PNG" alt=""></li>
                 <li><img src="https://hyobiin.github.io/study/work_log/images/admin.PNG" alt=""></li>
                 <li><img src="https://hyobiin.github.io/study/work_log/images/admin.PNG" alt=""></li>
                 <li><img src="https://hyobiin.github.io/study/work_log/images/admin.PNG" alt=""></li>
@@ -59,169 +60,50 @@
                 <li><img src="https://hyobiin.github.io/study/work_log/images/admin.PNG" alt=""></li>
                 <li><img src="https://hyobiin.github.io/study/work_log/images/admin.PNG" alt=""></li>
                 <li><img src="https://hyobiin.github.io/study/work_log/images/admin.PNG" alt=""></li>
-                <li><img src="https://hyobiin.github.io/study/work_log/images/admin.PNG" alt=""></li>
-                <li><img src="https://hyobiin.github.io/study/work_log/images/admin.PNG" alt=""></li>
+                <li><img src="https://hyobiin.github.io/study/work_log/images/admin.PNG" alt=""></li> -->
             </ul>
         </section>
         <section class="section2"></section>
         <section class="section3"></section>
-        <!-- <section class="uiux">
-            <div class="inner">
-                <h3 class="tit" data-aos="fade-up" data-aos-daley="900">UI/UX</h3>
-                <strong class="bg_txt">What We Do</strong>
-                
-
-                <ul>
-                    <li class="work_list1">
-                    <a href="https://finenuts.co.kr/bbs/board.php?bo_table=gallery&amp;wr_id=42">
-                        <div class="thumb">
-                            <img src="https://finenuts.co.kr/data/file/gallery/thumb-7e3fa8b2b26f241180ecae886adec422_RCNZjUvY_9165e5747bf572c7ff5a8222bd0a6413176ff740_895x895.png" alt="" >                </div>
-                        <div class="txt_box">
-                            <strong>[벼룩시장] 벼룩시장 플랫폼 리뉴얼 구축</strong>                </div>
-                        
-                            
-                    </a>            
-                    </li>
-                    <li class="work_list2">
-                    <a href="https://finenuts.co.kr/bbs/board.php?bo_table=gallery&amp;wr_id=41">
-                        <div class="thumb">
-                            <img src="https://finenuts.co.kr/data/file/gallery/thumb-7e3fa8b2b26f241180ecae886adec422_wLi4SOVa_ec9996b5ad7ba0dad94657dec79da0c3753c3822_895x895.png" alt="" >                </div>
-                        <div class="txt_box">
-                            <strong>[신한은행] 신한은행 PG 개발자센터</strong>                </div>
-                        
-                            
-                    </a>            
-                    </li>
-                    <li class="work_list3">
-                    <a href="https://finenuts.co.kr/bbs/board.php?bo_table=gallery&amp;wr_id=40">
-                        <div class="thumb">
-                            <img src="https://finenuts.co.kr/data/file/gallery/thumb-7e3fa8b2b26f241180ecae886adec422_EmWiaIC4_75fdf1aae6aa6a8805015d349ff7a13ccaeea9b1_895x895.png" alt="" >                </div>
-                        <div class="txt_box">
-                            <strong>[신한은행] 신한은행 PG</strong>                </div>
-                        
-                            
-                    </a>            
-                    </li>
-                    <li class="work_list4">
-                    <a href="https://finenuts.co.kr/bbs/board.php?bo_table=gallery&amp;wr_id=39">
-                        <div class="thumb">
-                            <img src="https://finenuts.co.kr/data/file/gallery/thumb-7e3fa8b2b26f241180ecae886adec422_URzd0eK9_e70225b6c4894dc98a53978901a13f3cf1b744c3_895x895.jpg" alt="" >                </div>
-                        <div class="txt_box">
-                            <strong>[롯데마트] 보틀벙커 고도화</strong>                </div>
-                        
-                            
-                    </a>            
-                    </li>
-                    <li class="work_list5">
-                    <a href="https://finenuts.co.kr/bbs/board.php?bo_table=gallery&amp;wr_id=38">
-                        <div class="thumb">
-                            <img src="https://finenuts.co.kr/data/file/gallery/thumb-0be7b4f65e5b8c82691240ae5ae97a5e_F2JZVQln_cf2bbaecfb61e183c69fcd26b1cda92eea5162ee_895x895.png" alt="" >                </div>
-                        <div class="txt_box">
-                            <strong>[오뚜기] 오뚜기 홈페이지</strong>                </div>
-                        
-                            
-                    </a>            
-                    </li>
-                    <li class="work_list6">
-                    <a href="https://finenuts.co.kr/bbs/board.php?bo_table=gallery&amp;wr_id=37">
-                        <div class="thumb">
-                            <img src="https://finenuts.co.kr/data/file/gallery/thumb-0be7b4f65e5b8c82691240ae5ae97a5e_wtpF2TVU_bb55df6cc1fc9e9343c4cf35db110bb94330b873_895x895.png" alt="" >                </div>
-                        <div class="txt_box">
-                            <strong>[한경] 유레카</strong>                </div>
-                        
-                            
-                    </a>            
-                    </li>
-                </ul>
-
-
-                 
-                <div class="btn_wrap">
-                    <a href="/bbs/board.php?bo_table=gallery" class="btn_more">more</a>
-                </div>
-            </div>
-        </section> -->
     </div>
     <script>
-        // gsap.registerPlugin(ScrollTrigger);
-
-        // gsap.to(".section1 .list",{
-        //     x: "-80%",
-        //     scrollTrigger: {
-        //         trigger: ".list",
-        //         start: "top top",
-        //         end: "+=300",
-        //         pin: ".section1",
-        //         pinSpacing: false,
-        //         scrub: true,
-        //         markers: true
-        //     }
-        // });
-
-        //gsap
         gsap.registerPlugin(ScrollTrigger);
 
         let flow_container = document.querySelector(".section1");
         let flow_list = document.querySelector(".section1 .list");
+
+        // 가로 스크롤 애니메이션
         let flow_scroll = gsap.timeline({
             scrollTrigger: {
-                trigger: ".section1 .list",
+                trigger: ".section1",
                 scrub: 1,
-                start: "top bottom",
-                invalidateOnRefresh: true,
+                start: "top top",
+                end: () => "+=" + (flow_container.scrollWidth - window.innerWidth),
+                pin: true,
+                anticipatePin: 1, // pin 고정시 튕기는 현상 방지
+                invalidateOnRefresh: true, // resize시 end값을 다시 계산
                 markers: true,
-                end: () => "+=" + (flow_container.scrollWidth - document.documentElement.clientWidth),
+                onEnter: () => {
+                    gsap.to(flow_container, {height:"100vh", duration:1});
+                },
+                onLeave: () => {
+                    gsap.to(flow_container, {height:"auto", duration:1});
+                },
+                onEnterBack: () => {
+                    gsap.to(flow_container, {height:"100vh", duration:1});
+                },
+                onLeaveBack: () => {
+                    gsap.top(flow_container, {height:"auto", duration:1});
+                }
             }
         });
 
-        // 애니메이션을 추가해서 .section1을 왼쪽으로 이동시키는 예시
+        // 애니메이션을 추가해서 .list를 왼쪽으로 이동시키는 예시
         flow_scroll.to(flow_list, {
-            x: () => -(flow_list.scrollWidth - document.documentElement.clientWidth),
+            x: () => -(flow_list.scrollWidth - window.innerWidth),
             duration: 1, // 애니메이션 지속 시간 (필요에 따라 조정 가능)
-            ease: "none", // 부드럽게 이동
+            ease: "none", // 속도 일정 유지
         });
-
-        console.log(document.querySelector(".section1 .list"));
-
-        // flow_scroll.to(flow_panel, {
-        //     x: () => -(flow_container.scrollWidth - document.documentElement.clientWidth)  + "px",
-        //     duration: 1,
-        //     ease: "none",
-        // });
-
-        // let flow_container2 = document.querySelector(".media");
-        // let flow_panel2 = gsap.utils.toArray(".media .line1, .media .line3");
-        // let flow_scroll2 = gsap.timeline({
-        //     scrollTrigger: {
-        //         trigger: ".media",
-        //         scrub: 1,
-        //         start: "top top",
-        //         invalidateOnRefresh: true,
-        //         end: () => "+=" + (flow_container2.scrollWidth - document.documentElement.clientWidth),
-        //     }
-        // });
-        // flow_scroll2.to(flow_panel2, {
-        //     x: () => -(flow_container2.scrollWidth - document.documentElement.clientWidth)  + "px",
-        //     duration: 1,
-        //     ease: "none",
-        // });
-
-        // let flow_container3= document.querySelector(".media");
-        // let flow_panel3 = gsap.utils.toArray(".media .line2");
-        // let flow_scroll3 = gsap.timeline({
-        //     scrollTrigger: {
-        //         trigger: ".media",
-        //         scrub: 1,
-        //         start: "top top",
-        //         invalidateOnRefresh: true,
-        //         end: () => "+=" + (flow_container3.scrollWidth - document.documentElement.clientWidth),
-        //     }
-        // });
-        // flow_scroll3.to(flow_panel3, {
-        //     x: () => +(flow_container3.scrollWidth - document.documentElement.clientWidth)  + "px",
-        //     duration: 1,
-        //     ease: "none",
-        // });
     </script>
 </body>
 </html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>스크롤 트리거 기본</title>
+    <style>
+        body {position:relative;background-color:transparent;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;-moz-osx-font-smoothing:grayscale;color:#000;}
+        body.mix{background-color: #000;}
+        body.black{background-color: #000;}
+        body.mix .container{background-color: #fff;}
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,p,button,iframe,th,td,a,select,input,textarea{margin:0;padding:0;font-family:'Pretendard', 'Malgun Gothic', '맑은 고딕', "돋움", sans-serif;font-weight:400;line-height:1.4;font-size:inherit;box-sizing:border-box}
+        body.layer_activated{overflow: hidden;}
+        var {font-style:normal;}
+        article,aside,details,figcaption,figure,footer,header,nav,section,summary,main{display:block;margin:0;padding:0;}
+        img,fieldset,iframe{border:0;}
+        li{list-style:none;}
+        button{overflow:visible;border:0;color:inherit;line-height:inherit;background:#fff;cursor:pointer;}
+        table{table-layout:fixed;border-collapse:collapse;border-spacing:0;width:100%;}
+        hr{display:none;}
+        legend{position:absolute; left:-9999px; top:0}
+        :focus-visible { outline: 0;}
+        .sr_only, caption {position:absolute; top:-9999px; font-size:0; height:0;}
+        select, input, textarea{color:#000;border-radius:0;border:0;-webkit-appearance:none;}
+        i, em, u, cite {font-style:normal;}
+        strong{font-weight:700;}
+        b{font-weight:400;}
+        img{max-width:100%;border:0;vertical-align:middle;}
+        a{color:#000;text-decoration:none;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+        address{font-style:normal;}
+        textarea{overflow-y:auto;resize:none;display:block}
+
+        .wrap{background:#eee;}
+        .top{height:1300px;}
+        .bottom{height:300px;}
+
+        .box_wrap{height:500px;background:#ccc;}
+        .box{width:50px;height:50px;background:#fe5312;}
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.3/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <div class="wrap">
+        <div class="top">위</div>
+        <div class="box_wrap"><div class="box">x:500</div></div>
+        <div class="bottom">아래</div>
+    </div>
+    <script>
+        gsap.registerPlugin(ScrollTrigger);
+
+        // gsap.to('.box', {
+        //     scrollTrigger: '.box',
+        //     x: 500
+        // });
+        gsap.to(".box", {
+            x: 500, // 오른쪽으로 이동
+            duration: 2,
+            scrollTrigger: {
+                trigger: ".box_wrap",
+                start: "top center",
+                end: "bottom center",
+                scrub: true,
+                pin: true // 스크롤 중 .box를 고정
+            }
+        });
+    </script>
+</body>
+</html>
