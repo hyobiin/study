@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Metatime React</title>
+    <link rel="stylesheet" href="../css/common.css">
+    <link rel="stylesheet" href="https://hyobiin.github.io/study/work_log/css/common.css">
+</head>
+<body>
+    <div class="wrap">
+        <h1>Metatime_pinat (React 사용)</h1>
+        <h2>소스 파악 참고 내용</h2>
+        <div class="border_dl">
+            <dl>
+                <dt>소스 경로</dt>
+                <dd>C:\payrollIF\metanet\metatime</dd>
+                <dd>권영후 과장님께 전달받은 frontend2.zip 풀어 놓은 것</dd>
+            </dl>
+            <dl>
+                <dt>npm start 참고</dt>
+                <dd>package.json => npm start <br>
+                    <img src="https://hyobiin.github.io/study/work_log/images/metatime_react/npm_start.PNG" alt="">
+                </dd>
+                <dd> npm start 오류로 node_modules 폴더를 지우고 다시 npm install을 해봤으나 어떤 패키지와 의존성이 안맞는다 하여 npm install --legacy-peer-deps 명령어 실행 <br> => 버전 충돌이 있어도 설치가 진행됨 <br>
+                    <img src="https://hyobiin.github.io/study/work_log/images/metatime_react/npm_start2.PNG" alt="">
+                </dd>
+                <dd>🚫 실행은 잘 되나 백엔드 연결이 안되어 있어서 오류남, 페이지를 제대로 볼 수 없음</dd>
+            </dl>
+            <dl class="list_dl">
+                <dt>작업시 필독 사항_index.js 주석</dt>
+                <dd>
+                    알림 팝업 기능은 아래 함수 사용 <br><br>
+                    showNotification( <br>
+                    &nbsp;&nbsp;'title', // String, HTML or Component <br>
+                    &nbsp;&nbsp;'content', // String, HTML or Component <br>
+                    &nbsp;&nbsp;'message type (color)' // 'default' || 'info' || 'warning' || 'success' || 'danger', <br>
+                    );
+                </dd>
+                <dd>2군대 이상 사용되는 컴포넌트는 필수로 /src/components 에 넣을것 <br>
+                    해당 페이지에서만 사용되는 컴포넌트는 해당 페이지폴더 ./components/ 에 제작할것. <br>
+                    2군대 이상 사용되는 CSS 도 컴포넌트와 같이 통일 폴더는 style
+                </dd>
+                <dd>API 연동 URL Service 는 <br>
+                    import services from "/src/services/Service" 로 불러서 사용 통일할것
+                </dd>
+                <dd>Store 도 API Service와 통일.. <br>
+                    import stores from "/src/models/Stores" 로 호출
+                </dd>
+                <dd>
+                    구조는 아래 참조 <br>
+                    페이지 <br>
+                    /src/pages/1차뎁스/파일... <br>
+                    /src/pages/1차뎁스/2차뎁스/파일...
+                </dd>
+                <dd>
+                    쿠키값은  <br>
+                    localStorage.getItem() <br>
+                    localStorage.setItem()
+                </dd>
+                <dd>
+                    번역기능 기본 넣어둘것. <br>
+                    import { useTranslation } from 'react-i18next'; <br><br>
+                    함수블라블라 = () => { <br>
+                        const { t } = useTranslation(['translation', 'menu']); <br>
+                    } <br><br>
+                    고정 텍스트에 {t("텍스트명")} 으로 출력 <br><br>
+                    [ADD] <br>
+                    달력 <br>
+                    https://bestofreactjs.com/repo/Adphorus-react-date-range-react-date-time-picker <br>
+                    npm install --save react-date-range
+                </dd>
+            </dl>
+        </div>
+    </div>
+</body>
+</html>

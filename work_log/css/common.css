@@ -64,6 +64,7 @@ ul li + li{margin-top:3px;}
 ul li::before{content:'';position:absolute;left:0;top:8px;width:2px;height:2px;border-radius:50%;background:#333;}
 h2 + ul li::before{top:12px;}
 td dl dd{font-size:inherit;}
+dl dt{font-weight:500;}
 dl dd{margin-top:5px;font-size:15px;line-height:18px;}
 dl dd::before{content:'✔';margin-right:5px;}
 .php::before,
@@ -78,6 +79,9 @@ td dl dd .php{font-size:11px;}
 .expain_code{display:inline-block;margin-top:10px;padding:10px;border:1px solid #333;border-radius:8px;background:rgba(0,0,0,.05);}
 .expain_code > div{padding-bottom:10px;line-height:1.5;}
 .expain_code.pb0 > div{padding-bottom:0;}
+.border_dl{display:inline-flex;flex-direction:column;gap:15px;}
+.border_dl dl{width:fit-content;padding:15px;border:1px solid #333;border-radius:5px;}
+.border_dl dt + dd{margin-top:15px;}
 
 /* 아코디언 */
 .accor_wrap{border-bottom:1px solid #333;}
