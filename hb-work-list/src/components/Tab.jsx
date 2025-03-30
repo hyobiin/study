@@ -17,7 +17,7 @@ export default function TabComponent(){
     ///// e ============ 탭 ============
 
     ///// s ============ 검색 ============
-    const [searchTerm, setSearchTerm] = useState("");
+    const [searchTerm, setSearchTerm] = useState(null);
     const [filteredResult, setFilteredResult] = useState(tabData[tabDataKey[activeTab]]); // handleSearch()에서 result 값 받아오기
     const searchInpRef = useRef(null);
 
@@ -47,9 +47,10 @@ export default function TabComponent(){
         setFilteredResult(result); // 전역변수로 사용할 수 있게 대입
 
         console.log("------------s: 버튼 클릭------------");
-        console.log(searchInpRef.current.value);
-        console.log(filteredData);
-        console.log(result);
+        // console.log(searchInpRef.current.value);
+        // console.log(filteredData);
+        // console.log(result);
+        console.log(searchTerm);
         console.log("------------e: 버튼 클릭------------");
     }
 
@@ -58,11 +59,12 @@ export default function TabComponent(){
     )
 
     console.log("------------s: 기본 출력------------");
-    console.log(`extractedValues[activeTab]: ${extractedValues[activeTab]}`);
-    console.log(`JSON.stringify.(extractedValues[activeTab]): ${JSON.stringify(extractedValues[activeTab])}`); // 객체나 배열을 JSON 문자열로 변환
-    console.log(`extractedValues[activeTab].length: ${extractedValues[activeTab].length}`);
+    // console.log(`extractedValues[activeTab]: ${extractedValues[activeTab]}`);
+    // console.log(`JSON.stringify.(extractedValues[activeTab]): ${JSON.stringify(extractedValues[activeTab])}`); // 객체나 배열을 JSON 문자열로 변환
+    // console.log(`extractedValues[activeTab].length: ${extractedValues[activeTab].length}`);
     console.log("setFilteredResult:", setFilteredResult);
-    console.log("filteredResult.length:", filteredResult.length);
+    // console.log("filteredResult.length:", filteredResult.length);
+    console.log(searchTerm);
     console.log("------------e: 기본 출력------------");
 
     // 엔터시 검색 함수 실행
@@ -143,12 +145,27 @@ export default function TabComponent(){
                                 </tr>
                             </thead>
                             <tbody>
-                                {(searchTerm
-                                /* TODO_HB
-                                [] 검색 데이터 td에 제대로 처리
+                            {/* TODO_HB
+                                [o] 검색 데이터 td에 제대로 처리
+                                [] 2번째 값 문자열로 나오게 변경
+                                [o] 검색 결과가 하나인 것은 가능한테 2개인 것은 불가..? (고치기)
                                 [] 전체보기 버튼 추가
-                                */
-                                ? JSON.stringify(filteredResult)
+                            */}
+                                {(searchTerm
+                                ?
+                                    filteredResult.map((data, dataIndex) => (
+                                        <>
+                                        <tr key={`${dataIndex}-${searchTerm}`}>
+                                            <td>{data[0]}</td>
+                                            <td>{JSON.stringify(data[1])}</td>
+                                            <td>{data[2]}</td>
+                                            <td>{data[3]}</td>
+                                            <td>{data[4]}</td>
+                                            <td>{data[5]}</td>
+                                            <td>{data[6]}</td>
+                                        </tr>
+                                        </>
+                                    ))
                                 : tabData[tabDataKey[activeTab]].map((data, dataIndex) => (
                                     <tr key={dataIndex}>
                                         {
