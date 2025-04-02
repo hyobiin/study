@@ -82,7 +82,22 @@ td dl dd .php{font-size:11px;}
 .border_dl{display:inline-flex;flex-direction:column;gap:15px;}
 .border_dl dl{width:fit-content;padding:15px;border:1px solid #333;border-radius:5px;}
 .border_dl dt + dd{margin-top:15px;}
-
+/* .event_2024_08200001 .evtoggleWarning .warningList li ul {
+    margin-top: 30px;
+    counter-reset: number 0;
+}
+.event_2024_08200001 .evtoggleWarning .warningList li ul li {
+position: relative;
+padding-left: 13px;
+font-size: 13px;
+line-height: 27px;
+}
+.event_2024_08200001 .evtoggleWarning .warningList li ul li::before {
+content: counter(number) ".";
+counter-increment: number 1;
+position: absolute;
+left: 0;
+} */
 /* 아코디언 */
 .accor_wrap{border-bottom:1px solid #333;}
 .accor_wrap h3{display:inline-block;}

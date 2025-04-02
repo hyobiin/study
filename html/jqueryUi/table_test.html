@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>daterange</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <style>
+        /* Reset */
+        html,body{height:100%;}
+        body {position:relative;background-color:#fff;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;-moz-osx-font-smoothing:grayscale;color:#000;}
+        body::before{position:fixed;left:0;top:0;width:100%;height:0;content:'';}/* fix webkit bug(scroll event delay) */
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,p,button,iframe,th,td,a,select,input,textarea{margin:0;padding:0;font-family:'Pretendard';font-weight:400;color:#000;line-height:1;font-size:inherit;box-sizing:border-box}
+        var {font-style:normal;}
+        article,aside,details,figcaption,figure,footer,header,nav,section,summary,main{display:block;margin:0;padding:0;}
+        img,fieldset,iframe{border:0;}
+        li{list-style:none;}
+        button{overflow:visible;border:0;color:inherit;line-height:inherit;background:transparent;cursor:pointer;}
+        table{table-layout:fixed;border-collapse:collapse;border-spacing:0;width:100%;}
+        hr{display:none;}
+        legend{position:absolute; left:-9999px; top:0}
+        .sr_only, caption {position:absolute; top:-9999px; font-size:0 !important; height:0 !important;}
+        select, input, textarea{color:#000;border-radius:0;border:0;-webkit-appearance:none;}
+        i, em, u, cite {font-style:normal;}
+        strong{font-weight:700;}
+        b{font-weight:400;}
+        img{max-width:100%;border:0;vertical-align:middle;}
+        a{color:#000;text-decoration:none;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+        address{font-style:normal;}
+        textarea{overflow-y:auto;resize:none;display:block}
+
+        .wrap{height:150px;}
+        .fixed_top{position:relative;height:30px;}
+        .fixed_top .left{position:absolute;left:0;top:0;}
+        .fixed_top .right{position:absolute;left:200px;top:0;display:flex;}
+        .test{position:relative;height:100%;padding-left:200px;}
+        .content_box{position:relative;min-width:100%;height:100%;white-space:nowrap;}
+        .content{height:100%;padding-left:200px;}
+        .content .fixed_left{overflow-y:hidden;position:absolute;left:0;top:0;bottom:10px;padding-bottom:5px;}
+        .content ul{overflow:auto;position:relative;left:0;top:5px;bottom:0;height:100%;}
+        .content ul li{display:flex;}
+        .content ul li div{width:100px;}
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div class="fixed_top">
+            <div class="left">이름</div>
+            <div class="right">
+                <div>휴일근무 시간</div>
+                <div>휴일근무 날짜</div>
+                <div>보상</div>
+                <div>휴일대체 / OT 차감</div>
+            </div>
+        </div>
+        <!-- <div class="test"> -->
+            <div class="content_box">
+                <div class="content">
+                    <div class="fixed_left">
+                        <div>admin</div>
+                        <div>admin</div>
+                        <div>admin</div>
+                        <div>admin</div>
+                        <div>admin</div>
+                        <div>admin</div>
+                        <div>admin</div>
+                        <div>admin</div>
+                        <div>admin</div>
+                        <div>admin</div>
+                    </div>
+                    <ul>
+                        <li>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                        </li>
+                        <li>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                        </li>
+                        <li>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                        </li>
+                        <li>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                        </li>
+                        <li>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                        </li>
+                        <li>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                        </li>
+                        <li>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                        </li>
+                        <li>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                        </li>
+                        <li>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                        </li>
+                        <li>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                            <div>테스트</div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        <!-- </div> -->
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let contentBox = document.querySelector(".content_box ul");
+            let fixedLeft = document.querySelector(".fixed_left");
+
+            // .content_box의 스크롤이 바뀌면 .fixed_left도 동일하게 움직이도록 설정
+            contentBox.addEventListener("scroll", function () {
+                fixedLeft.scrollTop = contentBox.scrollTop;
+            });
+        });
+    </script>
+</body>
+</html>

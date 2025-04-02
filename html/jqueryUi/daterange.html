@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>daterange</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+    <style>
+        .test {
+            position: absolute;
+            top: 0;
+            right: -120px; /* 오른쪽에 배치 */
+            width: 100px;
+            background: lightgray;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <!-- <input type="text" name="dates" value="" />
+    <span id="dateRangePicker">여기도 달력 나옴</span>
+    <script>
+        $('input[name="dates"]').daterangepicker();
+
+        $('#dateRangePicker').daterangepicker({
+            autoUpdateInput: false
+        }, function(start, end) {
+            $('#dateRangePicker').text(start.format('YYYY-MM-DD') + ' ~ ' + end.format('YYYY-MM-DD'));
+        });
+    </script> -->
+    <input type="text" id="datePicker">
+    <input type="time">
+
+
+    <script>
+        $(document).ready(function () {
+            $('#datePicker').daterangepicker({
+                opens: "right", // 캘린더가 우측에 열림
+                showDropdowns: true, // 년/월 선택 가능
+                autoUpdateInput: false,
+            }, function (start, end) {
+                $('#datePicker').val(start.format('YYYY-MM-DD') + ' ~ ' + end.format('YYYY-MM-DD'));
+            });
+
+            // 달력이 열릴 때 test div 추가
+            $('#datePicker').on('show.daterangepicker', function (ev, picker) {
+                setTimeout(function () {
+                    if (!$('.daterangepicker .test').length) {
+                        $('.daterangepicker').append(`
+                            <div class="test">
+                                <button>테스트</button>
+                                <a href="https://www.naver.com">네이버</a>
+                                <div>테스트</div>
+                                <div>테스트</div>
+                            </div>
+                        `);
+                    }
+                }, 10);
+            });
+        });
+    </script>
+</body>
+</html>
