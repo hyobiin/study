@@ -31,13 +31,22 @@
         address{font-style:normal;}
         textarea{overflow-y:auto;resize:none;display:block}
 
-        .sortable{display:flex;}
-        .sortable li{flex:1;}
+        /* .sortable{display:flex;} */
+        .sortable li{padding:10px;}
     </style>
 </head>
 <body>
     <ul id="sortable" class="sortable">
-        <li class="ui-state-default">1</li>
+        <li class="ui-state-default">
+            <div class="top"><button>제외</button></div>
+            <div class="cont">
+                <span class="profile">김</span>
+                <div class="info_box">
+                    <span class="name">함창완 선임</span>
+                    <span class="team"></span>
+                </div>
+            </div>
+        </li>
         <li class="ui-state-default">2</li>
         <li class="ui-state-default">3</li>
         <li class="ui-state-default">4</li>
@@ -53,7 +62,7 @@
 
     <script>
         $( "#sortable" ).sortable();
-        $( "#sortable" ).disableSelection();
+        $( "#sortable" ).disableSelection(); // 텍스트 드래그 방지
     </script>
 </body>
 </html>

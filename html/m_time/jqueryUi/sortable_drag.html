@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draggable + Sortable</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <style>
+        #sortable {
+            list-style: none;
+            padding: 0;
+            width: 200px;
+            min-height: 100px;
+            border: 1px solid gray;
+        }
+        #sortable li {
+            padding: 10px;
+            background: lightblue;
+            margin: 5px 0;
+            cursor: move;
+            border: 1px solid blue;
+        }
+        .draggable-item {
+            padding: 10px;
+            background: lightgreen;
+            cursor: grab;
+            border: 1px solid green;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<h3>드래그해서 리스트에 추가</h3>
+
+<div class="tab_box">
+    <div class="tab"><button>근무</button></div>
+    <div class="tab"><button>연차</button></div>
+</div>
+
+<div class="draggable-item">새 아이템 1</div>
+<div class="draggable-item">새 아이템 2</div>
+
+<ul id="sortable">
+    <li>아이템 1</li>
+    <li>아이템 2</li>
+    <li>아이템 3</li>
+</ul>
+
+<script>
+    $(document).ready(function () {
+        $("#sortable").sortable({
+            revert: true
+        }).disableSelection();
+
+        $(".draggable-item").draggable({
+            connectToSortable: "#sortable",
+            helper: "clone",
+            revert: "invalid"
+        });
+    });
+</script>
+
+</body>
+</html>

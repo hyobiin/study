@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dragula Example</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.3/dragula.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/dragula/3.7.3/dragula.min.css">
+    <style>
+        .container {
+            display: flex;
+            gap: 20px;
+        }
+        .list {
+            width: 200px;
+            min-height: 100px;
+            border: 1px solid gray;
+            padding: 10px;
+        }
+        .item {
+            padding: 10px;
+            background: lightblue;
+            margin: 5px 0;
+            cursor: grab;
+            border: 1px solid blue;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="list" id="list1">
+        <div class="item">아이템 1</div>
+        <div class="item">아이템 2</div>
+    </div>
+    <div class="list" id="list2">
+        <div class="item">아이템 3</div>
+        <div class="item">아이템 4</div>
+    </div>
+</div>
+
+<script>
+    dragula([document.getElementById("list1"), document.getElementById("list2")]);
+</script>
+
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Draggable + Sortable + Click Insert</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <style>
+        #sortable {
+            list-style: none;
+            padding: 0;
+            /* width: 200px; */
+            /* min-height: 100px; */
+            border: 1px solid gray;
+            background: #f9f9f9;
+        }
+        /* #sortable li {
+            padding: 10px;
+            background: lightblue;
+            margin: 5px 0;
+            cursor: pointer;
+            border: 1px solid blue;
+        } */
+        .draggable-item {
+            padding: 10px;
+            background: lightgreen;
+            cursor: grab;
+            border: 1px solid green;
+            margin-bottom: 10px;
+        }
+
+        .wrap{height:200px;}
+        .fixed_top{position:relative;height:30px;}
+        .fixed_top .left{position:absolute;left:0;top:0;}
+        .fixed_top .right{position:absolute;left:200px;top:0;display:flex;}
+        .test{position:relative;height:100%;padding-left:200px;}
+        .content_box{position:relative;min-width:100%;height:100%;white-space:nowrap;}
+        .content{height:100%;padding-left:200px;}
+        .content .fixed_left{overflow-y:hidden;position:absolute;left:0;top:0;bottom:10px;padding-bottom:5px;}
+        .content ul{overflow:auto;position:relative;left:0;top:5px;bottom:0;display:flex;height:100%;}
+        .content ul li{display:flex;flex-wrap:wrap;}
+        .content ul li div{width:200px;border-right:1px solid #ddd;}
+
+        .ui-sortable .active{border:2px solid #000;}
+        .ui-sortable .wid100{}
+        .ui-sortable .wid50{width:50% !important;}
+        .ui-sortable .wid25{width:25% !important;}
+    </style>
+</head>
+<body>
+
+<h3>드래그 또는 클릭하여 리스트에 추가</h3>
+
+<div class="tab_box">
+    <div class="tab"><button>근무</button></div>
+    <div class="tab"><button>연차</button></div>
+</div>
+
+<div class="draggable-item wid100">휴일</div>
+<div class="draggable-item wid50">A조</div>
+<div class="draggable-item wid25">오전조</div>
+
+<!-- <div id="sortable">
+    <div>아이템 1</div>
+    <div>아이템 2</div>
+    <div>아이템 3</div>
+</div> -->
+
+<div class="wrap">
+    <div class="fixed_top">
+        <div class="left">이름</div>
+        <div class="right">
+            <div>휴일근무 시간</div>
+            <div>휴일근무 날짜</div>
+            <div>보상</div>
+            <div>휴일대체 / OT 차감</div>
+        </div>
+    </div>
+    <div class="content_box">
+        <div class="content">
+            <div class="fixed_left">
+                <div>admin</div>
+                <div>admin</div>
+                <div>admin</div>
+                <div>admin</div>
+                <div>admin</div>
+                <div>admin</div>
+                <div>admin</div>
+                <div>admin</div>
+                <div>admin</div>
+                <div>admin</div>
+            </div>
+            <ul id="sortable">
+                <li>
+                    <div>test</div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </li>
+                <li>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div>test</div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </li>
+                <li>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div>tset</div>
+                </li>
+                <li>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div>set</div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </li>
+                <li>
+                    <div></div>
+                    <div></div>
+                    <div>test</div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </li>
+                <li>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </li>
+                <li>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </li>
+                <li>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </li>
+                <li>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </li>
+                <li>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        // ==========================================================sorting --s
+        let draggedItem = null; // 드래그된 아이템 저장 변수
+
+        // Sortable 리스트 활성화
+        $("#sortable").sortable({
+            revert: true
+        }).disableSelection();
+
+        // 드래그 가능한 요소 설정
+        $(".draggable-item").draggable({
+            connectToSortable: "#sortable", // sortable 리스트와 연결
+            helper: "clone",
+            revert: "invalid",
+            start: function(event, ui) {
+                draggedItem = $(this).clone(); // 드래그된 아이템 복사
+            }
+        });
+
+        // 리스트 내부 클릭 시 드래그한 요소 추가
+        $("#sortable li div").on("click", "li", function() {
+            if (draggedItem) {
+                $(this).replaceWith(draggedItem.clone()); // 클릭한 li 뒤에 추가
+                $("#sortable").sortable("refresh"); // Sortable 업데이트
+                // draggedItem = null; // 추가 후 초기화
+            }
+            // console.log("draggedItem" + draggedItem);
+        });
+
+        // 리스트 빈 공간 클릭 시 추가
+        $("#sortable li div").on("click", function(e) {
+            if (e.target.id === "sortable" && draggedItem) {
+                $(this).append(draggedItem.clone()); // 리스트 마지막에 추가
+                $("#sortable").sortable("refresh"); // Sortable 업데이트
+                // draggedItem = null;
+            }
+            // console.log(draggedItem);
+        });
+
+        $('.ui-sortable li div').on('click', function(e){
+            console.log(e.target);
+            var $target = $(e.target);
+            $('.ui-sortable div').removeClass('active');
+
+            $target.addClass('active');
+        });
+
+        $(document).keydown(function(e){
+            if(e.key === 'Delete' || e.key === 'Backspace'){
+                $('.ui-sortable .active').remove();
+            }
+        });
+        // ==========================================================sorting --e
+
+        // 테이블
+        let $contentBox = $('.content_box ul');
+        let $fixedLeft = $('.fixed_left');
+
+        $contentBox.on('scroll', function(){
+            $fixedLeft.scrollTop($contentBox.scrollTop());
+        });
+    });
+</script>
+
+</body>
+</html>
