@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>calendar</title>
+  <style>
+    body{margin:20px;font-family:Arial, sans-serif;}
+    .header{margin-bottom:20px;text-align:center;}
+    .header .btn_arr{padding:5px 10px;font-size:20px;cursor:pointer;}
+    .inp_box{margin:0 15% 20px;text-align:center;}
+    .inp_box input{width:70%;padding:5px;font-size:16px;}
+    .inp_box button{margin-left:5px;padding:5px 10px;font-weight:16px;}
+    .task_list{min-height:50px;margin:0 15% 20px;padding:10px;border:1px solid #ccc;background:#f7f7f7;text-align:center;}
+    .task_list .task{display:inline-block;margin:5px;padding:5px 10px;border:1px solid #2196f3;background:#e7f3fe;cursor:move;}
+    .tbl_calendar{position:relative;width:70%;margin:0 auto;border-collapse:collapse;}
+    .tbl_calendar thead th,
+    .tbl_calendar tbody td{position:relative;width:14.28%;height:100px;padding:5px;border:1px solid #ccc;vertical-align:top;}
+    .tbl_calendar thead th{height:20px;background:#f0f0f0;}
+    .tbl_calendar .date{font-weight:700;}
+    .tbl_calendar .today{background:#ffffe0;}
+    .tbl_calendar .dropzone{min-height:20px;padding:2px;margin-top:20px;border:1px dashed #ccc;background:#fafafa;}
+
+    .trash_box{width:70%;margin:20px auto;padding:10px;border:2px dashed red;color:red;text-align:center;}
+  </style>
+</head>
+<body>
+  <div>
+    <div id="header" class="header">
+      <span class="btn_arr" onclick="prevMonth()">&laquo;</span>
+      <span id="monthYear"><!--// 동적 생성 --></span>
+      <span class="btn_arr" onclick="nextMonth()">&raquo;</span>
+    </div>
+    <div id="newTaskContainer" class="inp_box">
+      <input type="text" id="newTask" placeholder="새 할 일을 입력하세요.">
+      <button id="addTask">추가</button>
+    </div>
+    <div id="tasks" class="task_list" ondragover="allowDrop(event)" ondrop="dropTaskToList(event)">
+      <div id="task1" class="task">할일 1: 미팅 준비</div>
+      <div id="task2" class="task">할일 2: 코드 리뷰 준비</div>
+      <div id="task3" class="task">할일 3: 문서 작성</div>
+    </div>
+  
+    <table id="calendar" class="tbl_calendar">
+      <thead>
+        <tr id="weekDays"></tr>
+      </thead>
+      <tbody id="calendarBody"><!--// 동적 생성 --></tbody>
+    </table>
+
+    <div id="trash" class="trash_box" ondragover="allowDrop(event)" ondrop="dropTrash(event)">
+      <h3>삭제 영역</h3>
+      <p>할일 항목을 이곳에 드롭하면 삭제됩니다.</p>
+    </div>
+  </div>
+
+  <script>
+    let currentDateObj = new Date(); // new로 호출되는 것은 한 번만 호출 되는 것이 좋다.
+    let currentYear = currentDateObj.getFullYear();
+    let currentMonth = currentDateObj.getMonth(); // getMonth() : 0 ~ 11까지 구해줌 => 0이면 알아서 1월로 인식함
+
+    const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+    const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+
+    // 달력 기본 틀
+    function initHeader(){
+      // 상단 해당 년월
+      // document.getElementById("monthYear").textContent = `${currentYear}년 ${currentMonth + 1}월`; // 이렇게도 가능하지만 국제화를 위해 배열로 만듬
+      document.getElementById("monthYear").textContent = `${currentYear}년 ${monthNames[currentMonth]}`;
+      
+      // 달력 요일 뿌리기
+      const weekDaysRow = document.getElementById("weekDays");
+      weekDaysRow.innerHTML = "";
+      dayNames.forEach(day => {
+        const th = document.createElement("th");
+        th.textContent = day;
+        weekDaysRow.appendChild(th);
+      });
+    }
+
+    // 달력 날짜 생성
+    function renderCalendar(){
+      const calendarBody = document.getElementById('calendarBody');
+      calendarBody.innerHTML - "";
+
+      const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // 2025.4.1의 요일 구하기
+      const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
+      
+      let date = 1;
+
+      for(let i = 0; i < 6; i++){
+        const row = document.createElement("tr");
+
+        for(let j = 0; j < 7; j++){
+          const cell = document.createElement("td");
+
+          if((i === 0 && j < firstDay) || date > lastDate){ // Q. 그럼 전달, 다음달이 보이게 하는 경우는?
+            cell.innerHTML = "";
+          }else{
+            cell.innerHTML = "";
+            cell.innerHTML = `<span class="date">${date}</span>`; // 날짜 뿌리기
+
+            // 해당하는 날짜의 키
+            const dateKey = `${currentYear}-${currentMonth + 1}-${date}`;
+            cell.setAttribute("data-date", dateKey);
+
+            // dropzone 생성
+            const dz = document.createElement("div");
+            dz.classList.add("dropzone");
+            cell.appendChild(dz);
+
+            // 오늘 날짜 표시
+            const today = new Date();
+            if(currentYear === today.getFullYear() && currentMonth === today.getMonth() && date === today.getDate()){
+              cell.classList.add("today");
+            }
+
+            // 드래그
+            cell.setAttribute("ondragover", "allowDrop(event)"); // 드래그 중
+            cell.setAttribute("ondrop", "dropTask(event)"); // 드래그 놓음
+
+            date++;
+          }
+          row.appendChild(cell);
+        }
+        calendarBody.appendChild(row);
+      }
+      console.log("firstDay: "+firstDay +"lastday: "+lastDate);
+    }
+
+    // 할일이 배정되지 않은 항목을 할일 목록에 표시
+    function renderTasksList(){
+      const tasksContainer = document.getElementById("tasks");
+      tasksContainer.innerHTML = "";
+      for(let taskId in tasksData){
+        if(tasksData[taskId].assignedDate === null){
+          tasksContainer.appendChild(tasksData[taskid].element);
+        }
+      }
+    }
+
+     // 할일 목록
+    let tasksData = {};
+
+    document.querySelectorAll(".task").forEach(task => {
+      tasksData[task.id] = {
+        element: task,
+        content: task.textContent,
+        assignedDate: null
+      };
+
+      attachDragEvents(task);
+    });
+
+    // 할일 목록 드래그
+    function attachDragEvents(taskElement){
+      taskElement.setAttribute("draggable", true); // 드래그 가능 속성 부여
+      taskElement.addEventListener("dragstart", function(event){
+        event.dataTransfer.setData('text/plain', event.target.id); // 드래그 하는 동안 id값 가지고 있기
+      });
+    }
+
+    // 드래그 중 drop 허용
+    function allowDrop(event){
+      event.preventDefault(); // dropTask 이벤트까지 호출되게 넣어줌
+      console.log("드롭이 들어옴");
+    }
+
+    // 달력 셀에 할일 드롭 시
+    function dropTask(event){
+      event.preventDefault();
+      const taskId = event.dataTransfer.getData("text/plain"); // 일반 텍스트 데이터 가져오기
+      const taskInfo = tasksData[taskId];
+      if(!taskInfo) return;
+      let cell = event.currentTarget;
+      if(!cell.getAttribute("data-date") && cell.parentElement){
+        cell = cell.parentElement; // 방어코드
+      }
+      const dateKey = cell.getAttribute("data-date");
+      if(!dateKey) return;
+
+      taskInfo.assignedDate = dateKey;
+
+      // 달력에 옮겨 넣기
+      const dropzone = cell.querySelector(".dropzone");
+      if(dropzone){
+        dropzone.appendChild(taskInfo.element);
+      }
+    }
+
+    // 할일 목록에 다시 가져다 놓으면 원복 되기
+    function dropTaskToList(){
+      event.preventDefault();
+      const taskId = event.dataTransfer.getData("text/plain");
+      const taskInfo = tasksData[taskId];
+      if(!taskInfo) return; // 방어코드
+      taskInfo.assignedDate = null;
+      document.getElementById("tasks").appendChild(taskInfo.element);
+    }
+
+
+    // 삭제영역에 가져다 놓았을 때 삭제
+    // 내가 한 방법 => 작동은 잘 하지만 tasksData를 console.log 찍었을 때 데이터가 남아있음.
+    // function dropTrash(event){
+    //   event.preventDefault();
+    //   const taskId = event.dataTransfer.getData("text/plain");
+    //   const taskInfoElement = tasksData[taskId].element;
+    //   taskInfoElement.remove();
+    // }
+
+    // 강사님 방법
+    function dropTrash(event){
+      event.preventDefault();
+      const taskId = event.dataTransfer.getData("text/plain");
+      if(tasksData[taskId]){ // 방어코드
+        delete tasksData[taskId]; // 데이터에서 삭제
+        const taskElement = document.getElementById[taskId];
+        
+        if(taskElement && taskElement.parentElement){
+          taskElement.parentElement.removeChild(taskElement);
+        }
+      }
+    }
+
+    // input에서 할일 추가
+    document.getElementById("addTask").addEventListener("click", function(){
+      const newTaskInput = document.getElementById("newTask");
+      const taskText = newTaskInput.value.trim();
+      if(taskText !== ""){
+        const taskId = "task" + Date.now(); // 중복되지 않게 현재 시간 추가
+        const newTask = document.createElement("div");
+        newTask.classList.add("task");
+        newTask.id = taskId;
+        newTask.textContent = taskText;
+        attachDragEvents(newTask);
+        tasksData[taskId] = {
+          element: newTask,
+          content: taskText,
+          assignedDate: null
+        };
+        document.getElementById("tasks").appendChild(newTask);
+        newTaskInput.value = "";
+      }
+    });
+
+    initHeader();
+    renderCalendar();
+
+    // 이전달
+    function prevMonth(){
+      if(currentMonth === 0){
+        currentMonth = 11;
+        currentYear--;
+      }else{
+        currentMonth--;
+      }
+
+      initHeader();
+      renderCalendar();
+      renderTasksList();
+
+    }
+
+    // 다음달
+    function nextMonth(){
+      if(currentMonth === 11){
+        currentMonth = 0;
+        currentYear++;
+      }else{
+        currentMonth++;
+      }
+      
+      initHeader();
+      renderCalendar();
+      renderTasksList();
+    }
+  </script>
+</body>
+</html>

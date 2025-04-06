@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>달력과 할일 드래그 앤 드롭 (공휴일 정보 표시)</title>
+  <style>
+    body { 
+      font-family: Arial, sans-serif; 
+      margin: 20px;
+    }
+    #header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    /* 달력 상단에 이전/다음 화살표 버튼 */
+    .nav-btn {
+      cursor: pointer;
+      font-size: 1.5em;
+      padding: 0 10px;
+      user-select: none;
+    }
+    /* 할일 입력 영역 */
+    #newTaskContainer {
+      width: 70%;
+      margin: 0 auto 10px auto;
+      text-align: center;
+    }
+    #newTask {
+      width: 70%;
+      padding: 5px;
+      font-size: 1em;
+    }
+    #addTask {
+      padding: 5px 10px;
+      font-size: 1em;
+      margin-left: 5px;
+    }
+    /* 할일 목록 영역 */
+    #tasks {
+      width: 70%;
+      margin: 0 auto 20px auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f7f7f7;
+      text-align: center;
+      min-height: 50px;
+    }
+    .task {
+      margin: 5px;
+      padding: 5px 10px;
+      background-color: #e7f3fe;
+      border: 1px solid #2196F3;
+      cursor: move;
+      display: inline-block;
+    }
+    /* 달력 스타일 */
+    #calendar {
+      border-collapse: collapse;
+      width: 70%;
+      margin: 0 auto;
+      position: relative;
+    }
+    #calendar th, #calendar td {
+      border: 1px solid #ccc;
+      width: 14.28%;
+      height: 100px;
+      vertical-align: top;
+      padding: 5px;
+      position: relative;
+    }
+    #calendar th {
+      background-color: #f0f0f0;
+      height: 20px;
+    }
+    .today {
+      background-color: #ffffe0;
+    }
+    .dropzone {
+      min-height: 20px;
+      margin-top: 20px;
+      padding: 2px;
+      border: 1px dashed #ccc;
+      background-color: #fafafa;
+    }
+    /* 삭제 영역 스타일 */
+    #trash {
+      width: 70%;
+      margin: 20px auto;
+      padding: 10px;
+      border: 2px dashed red;
+      text-align: center;
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <span class="nav-btn" onclick="prevMonth()">&laquo;</span>
+    <span id="monthYear"></span>
+    <span class="nav-btn" onclick="nextMonth()">&raquo;</span>
+  </div>
+
+  <!-- 할일 입력 영역 -->
+  <div id="newTaskContainer">
+    <input type="text" id="newTask" placeholder="새 할일을 입력하세요">
+    <button id="addTask">추가</button>
+  </div>
+
+  <!-- 할일 목록 (드롭존 추가하여 목록으로 복귀 가능) -->
+  <div id="tasks" ondragover="allowDrop(event)" ondrop="dropTaskToList(event)">
+    <!-- 초기 할일들 -->
+    <div class="task" draggable="true" id="task1">할일 1: 미팅 준비</div>
+    <div class="task" draggable="true" id="task2">할일 2: 코드 리뷰</div>
+    <div class="task" draggable="true" id="task3">할일 3: 문서 작성</div>
+  </div>
+  
+  <!-- 달력 -->
+  <table id="calendar">
+    <thead>
+      <tr id="weekDays">
+        <!-- 요일 헤더는 JS로 채움 -->
+      </tr>
+    </thead>
+    <tbody id="calendarBody">
+      <!-- 달력 날짜는 JS로 채움 -->
+    </tbody>
+  </table>
+  
+  <!-- 삭제 영역 -->
+  <div id="trash" ondragover="allowDrop(event)" ondrop="dropTrash(event)">
+    <h3>삭제 영역</h3>
+    <p>할일 항목을 이곳에 드롭하면 삭제됩니다.</p>
+  </div>
+  
+  <script>
+    // 전역 변수: 달력 정보와 할일 데이터 저장
+    let currentDateObj = new Date();
+    let currentYear = currentDateObj.getFullYear();
+    let currentMonth = currentDateObj.getMonth(); // 0 ~ 11
+    const monthNames = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+    const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
+    // tasksData: 키는 taskId, 값은 { element, content, assignedDate ("YYYY-M-D" 또는 null) }
+    let tasksData = {};
+
+    // 초기 할일 DOM 요소들을 tasksData에 저장
+    document.querySelectorAll('.task').forEach(task => {
+      tasksData[task.id] = {
+        element: task,
+        content: task.textContent,
+        assignedDate: null
+      };
+      attachDragEvents(task);
+    });
+    
+    // header 및 요일 헤더 초기 생성
+    function initHeader() {
+      document.getElementById("monthYear").textContent = `${currentYear}년 ${monthNames[currentMonth]}`;
+      const weekDaysRow = document.getElementById("weekDays");
+      weekDaysRow.innerHTML = "";
+      dayNames.forEach(day => {
+        const th = document.createElement("th");
+        th.textContent = day;
+        weekDaysRow.appendChild(th);
+      });
+    }
+    
+    // 달력 렌더링 함수
+    function renderCalendar() {
+      const calendarBody = document.getElementById("calendarBody");
+      calendarBody.innerHTML = "";
+      // 현재 달 1일의 요일과 마지막 날짜 구하기
+      const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+      const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
+      let date = 1;
+      for (let i = 0; i < 6; i++) {
+        const row = document.createElement("tr");
+        for (let j = 0; j < 7; j++) {
+          const cell = document.createElement("td");
+          if ((i === 0 && j < firstDay) || date > lastDate) {
+            cell.innerHTML = "";
+            const dz = document.createElement("div");
+            dz.classList.add("dropzone");
+            cell.appendChild(dz);
+          } else {
+            // 날짜 번호를 span 태그로 감싸고, 오른쪽 상단에 공휴일 정보를 표시할 공간 확보
+            cell.innerHTML = `<span class="dateNumber">${date}</span>`;
+            const dateKey = `${currentYear}-${currentMonth+1}-${date}`;
+            cell.setAttribute("data-date", dateKey);
+            const dz = document.createElement("div");
+            dz.classList.add("dropzone");
+            // tasksData에서 해당 날짜에 배정된 할일 재배치
+            for (let taskId in tasksData) {
+              if (tasksData[taskId].assignedDate === dateKey) {
+                dz.appendChild(tasksData[taskId].element);
+              }
+            }
+            cell.appendChild(dz);
+            // 오늘 날짜 강조
+            const today = new Date();
+            if (currentYear === today.getFullYear() &&
+                currentMonth === today.getMonth() &&
+                date === today.getDate()) {
+              cell.classList.add("today");
+            }
+            date++;
+          }
+          cell.setAttribute("ondragover", "allowDrop(event)");
+          cell.setAttribute("ondrop", "dropTask(event)");
+          row.appendChild(cell);
+        }
+        calendarBody.appendChild(row);
+        if (date > lastDate) break;
+      }
+      // 달력 렌더링 후 공휴일 적용
+      fetchHolidays(currentYear, currentMonth + 1);
+    }
+    
+    // 할일 목록 재배치: 할일이 배정되지 않은 항목은 tasks 영역에 표시
+    function renderTasksList() {
+      const tasksContainer = document.getElementById("tasks");
+      tasksContainer.innerHTML = "";
+      for (let taskId in tasksData) {
+        if (tasksData[taskId].assignedDate === null) {
+          tasksContainer.appendChild(tasksData[taskId].element);
+        }
+      }
+    }
+    
+    // 공휴일 정보 가져오기 (연, 월)
+    function fetchHolidays(year, month) {
+      const monthStr = month < 10 ? '0' + month : month;
+      const apiUrl = `http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?solYear=${year}&solMonth=${monthStr}&serviceKey=lz2oqV9njaWwiIrQcFdNp6ZkBe8vpjAIEgS2nZEyp4mrzxg1CQX7EY1D9DMbeF%2B8eeAV8oEXn%2BdZ%2BHqUmf3PtA%3D%3D`;
+      
+      fetch(apiUrl)
+        .then(response => response.text())
+        .then(str => {
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(str, "text/xml");
+          const items = xmlDoc.getElementsByTagName("item");
+          // holidayMap: key는 "YYYY-M-D", 값은 배열(객체: { dateName, seq })
+          const holidayMap = {};
+          for (let i = 0; i < items.length; i++) {
+            const isHoliday = items[i].getElementsByTagName("isHoliday")[0].textContent;
+            if (isHoliday === "Y") {
+              const locdate = items[i].getElementsByTagName("locdate")[0].textContent; // 예: "20250505"
+              const yearPart = parseInt(locdate.substring(0,4), 10);
+              const monthPart = parseInt(locdate.substring(4,6), 10);
+              const dayPart = parseInt(locdate.substring(6,8), 10);
+              const dateKey = `${yearPart}-${monthPart}-${dayPart}`;
+              const dateName = items[i].getElementsByTagName("dateName")[0].textContent;
+              const seq = parseInt(items[i].getElementsByTagName("seq")[0].textContent, 10);
+              if (!holidayMap[dateKey]) {
+                holidayMap[dateKey] = [];
+              }
+              holidayMap[dateKey].push({ dateName, seq });
+            }
+          }
+          applyHolidayStyles(holidayMap);
+        })
+        .catch(err => console.error("공휴일 정보 가져오기 에러:", err));
+    }
+    
+    // 각 날짜 셀에 대해 holidayMap 정보를 적용
+    function applyHolidayStyles(holidayMap) {
+      const cells = document.querySelectorAll("#calendar td[data-date]");
+      cells.forEach(cell => {
+        const dateKey = cell.getAttribute("data-date");
+        let holidayDiv = cell.querySelector(".holidayText");
+        if (holidayMap[dateKey]) {
+          // 날짜 번호 span을 빨간색으로
+          const dateSpan = cell.querySelector(".dateNumber");
+          if (dateSpan) {
+            dateSpan.style.color = "red";
+          }
+          // seq 순으로 정렬 후, 공휴일 이름들을 줄바꿈 문자로 연결
+          const holidays = holidayMap[dateKey].sort((a, b) => a.seq - b.seq);
+          const holidayText = holidays.map(item => item.dateName).join("\n");
+  
+          if (!holidayDiv) {
+            holidayDiv = document.createElement("div");
+            holidayDiv.classList.add("holidayText");
+            // 기존 스타일 유지하되, white-space를 pre-line으로 수정하여 줄바꿈 적용
+            holidayDiv.style.position = "absolute";
+            holidayDiv.style.top = "5px";
+            holidayDiv.style.right = "5px";
+            holidayDiv.style.fontSize = "0.8em";
+            holidayDiv.style.textAlign = "right";
+            holidayDiv.style.whiteSpace = "pre-line"; // 변경된 부분
+            holidayDiv.style.color = "red";
+            cell.appendChild(holidayDiv);
+          }
+          holidayDiv.textContent = holidayText;
+        } else {
+          if (holidayDiv) {
+            holidayDiv.textContent = "";
+          }
+        }
+      });
+    }
+    
+    // 초기 실행
+    initHeader();
+    renderCalendar();
+    renderTasksList();
+    
+    // 이전/다음 달 이동 함수
+    function prevMonth() {
+      if (currentMonth === 0) {
+        currentMonth = 11;
+        currentYear--;
+      } else {
+        currentMonth--;
+      }
+      initHeader();
+      renderCalendar();
+    }
+    function nextMonth() {
+      if (currentMonth === 11) {
+        currentMonth = 0;
+        currentYear++;
+      } else {
+        currentMonth++;
+      }
+      initHeader();
+      renderCalendar();
+    }
+    
+    // 드래그 이벤트 부여 함수
+    function attachDragEvents(taskElement) {
+      taskElement.setAttribute('draggable', true);
+      taskElement.addEventListener('dragstart', function(event) {
+        event.dataTransfer.setData('text/plain', event.target.id);
+      });
+    }
+    
+    // 새 할일 추가
+    document.getElementById("addTask").addEventListener("click", function() {
+      const newTaskInput = document.getElementById("newTask");
+      const taskText = newTaskInput.value.trim();
+      if (taskText !== "") {
+        const taskId = "task" + Date.now();
+        const newTask = document.createElement("div");
+        newTask.classList.add("task");
+        newTask.id = taskId;
+        newTask.textContent = taskText;
+        attachDragEvents(newTask);
+        tasksData[taskId] = {
+          element: newTask,
+          content: taskText,
+          assignedDate: null
+        };
+        document.getElementById("tasks").appendChild(newTask);
+        newTaskInput.value = "";
+      }
+    });
+    
+    // 드래그 중 drop 허용
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+    
+    // 달력 셀에 할일 드롭 시 (배정)
+    function dropTask(event) {
+      event.preventDefault();
+      const taskId = event.dataTransfer.getData('text/plain');
+      const taskInfo = tasksData[taskId];
+      if (!taskInfo) return;
+      let cell = event.currentTarget;
+      if (!cell.getAttribute("data-date") && cell.parentElement) {
+        cell = cell.parentElement;
+      }
+      const dateKey = cell.getAttribute("data-date");
+      if (!dateKey) return;
+      taskInfo.assignedDate = dateKey;
+      const dropzone = cell.querySelector('.dropzone');
+      if (dropzone) {
+        dropzone.appendChild(taskInfo.element);
+      }
+    }
+    
+    // 할일 항목을 목록 영역으로 드롭 시 (배정 해제)
+    function dropTaskToList(event) {
+      event.preventDefault();
+      const taskId = event.dataTransfer.getData('text/plain');
+      const taskInfo = tasksData[taskId];
+      if (!taskInfo) return;
+      taskInfo.assignedDate = null;
+      document.getElementById("tasks").appendChild(taskInfo.element);
+    }
+    
+    // 삭제 영역에 드롭 시 할일 삭제
+    function dropTrash(event) {
+      event.preventDefault();
+      const taskId = event.dataTransfer.getData('text/plain');
+      if (tasksData[taskId]) {
+        delete tasksData[taskId];
+        const taskElement = document.getElementById(taskId);
+        if (taskElement && taskElement.parentElement) {
+          taskElement.parentElement.removeChild(taskElement);
+        }
+      }
+    }
+  </script>
+</body>
+</html>
