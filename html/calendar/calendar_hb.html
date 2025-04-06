@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>calendar</title>
+  <title>calendar_전달, 다음달도 가져오기</title>
   <style>
     body{margin:20px;font-family:Arial, sans-serif;}
     .header{margin-bottom:20px;text-align:center;}
@@ -81,7 +81,7 @@
     // 달력 날짜 생성
     function renderCalendar(){
       const calendarBody = document.getElementById('calendarBody');
-      calendarBody.innerHTML - "";
+      calendarBody.innerHTML = "";
 
       const firstDay = new Date(currentYear, currentMonth, 1).getDay(); // 2025.4.1의 요일 구하기
       const lastDate = new Date(currentYear, currentMonth + 1, 0).getDate();
@@ -97,7 +97,6 @@
           if((i === 0 && j < firstDay) || date > lastDate){ // Q. 그럼 전달, 다음달이 보이게 하는 경우는?
             cell.innerHTML = "";
           }else{
-            cell.innerHTML = "";
             cell.innerHTML = `<span class="date">${date}</span>`; // 날짜 뿌리기
 
             // 해당하는 날짜의 키
@@ -107,6 +106,14 @@
             // dropzone 생성
             const dz = document.createElement("div");
             dz.classList.add("dropzone");
+
+            // tasksData에서 해당 날짜에 배정된 할일 재배치
+            for(let taskId in tasksData){
+              if(tasksData[taskId].assignedDate === dateKey){
+                dz.appendChild(tasksData[taskId].element);
+              }
+            }
+            
             cell.appendChild(dz);
 
             // 오늘 날짜 표시
@@ -124,8 +131,11 @@
           row.appendChild(cell);
         }
         calendarBody.appendChild(row);
+        if(date > lastDate) break; // 필요 없는 주 삭제
       }
-      console.log("firstDay: "+firstDay +"lastday: "+lastDate);
+
+      // 달력 렌더링 후 공휴일 적용
+      fetchHolidays(currentYear, currentMonth + 1);
     }
 
     // 할일이 배정되지 않은 항목을 할일 목록에 표시
@@ -134,9 +144,78 @@
       tasksContainer.innerHTML = "";
       for(let taskId in tasksData){
         if(tasksData[taskId].assignedDate === null){
-          tasksContainer.appendChild(tasksData[taskid].element);
+          tasksContainer.appendChild(tasksData[taskId].element);
         }
       }
+    }
+
+    // 공휴일 가져오기(공공데이터 포탈 + postman 이용)
+    function fetchHolidays(year, month){
+      const monthStr = month < 10 ? '0' + month : month;
+      const apiUrl = `http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?solYear=${year}&solMonth=${monthStr}&serviceKey=lz2oqV9njaWwiIrQcFdNp6ZkBe8vpjAIEgS2nZEyp4mrzxg1CQX7EY1D9DMbeF%2B8eeAV8oEXn%2BdZ%2BHqUmf3PtA%3D%3D`;
+
+      fetch(apiUrl)
+      .then(response => response.text())
+      .then(str => {
+        const parser = new DOMParser(); // xml 코드 분리
+        const xmlDoc = parser.parseFromString(str, "text/xml"); // Dom 객체로 변환
+        const items = xmlDoc.getElementsByTagName("item");
+        const holidayMap = {}; // json으로 변환
+        for(let i = 0; i < items.length; i++){
+          const isHoliday = items[i].getElementsByTagName("isHoliday")[0].textContent;
+          if(isHoliday === "Y"){
+            const locdate = items[i].getElementsByTagName("locdate")[0].textContent;
+            const yearPart = parseInt(locdate.substring(0, 4), 10); // locdate의 0~3까지 숫자를 10진수로 가져와라
+            const monthPart = parseInt(locdate.substring(4, 6), 10);
+            const dayPart = parseInt(locdate.substring(6, 8), 10);
+            const dateKey = `${yearPart}-${monthPart}-${dayPart}`;
+            const dateName = items[i].getElementsByTagName("dateName")[0].textContent;
+            const seq = parseInt(items[i].getElementsByTagName("seq")[0].textContent);
+            if(!holidayMap[dateKey]){
+              holidayMap[dateKey] = [];
+            }
+            holidayMap[dateKey].push({dateName, seq});
+          }
+        }
+        applyHolidayStyles(holidayMap);
+      })
+      .catch(err => console.error("공휴일 정보 가져오기 에러: ", err));
+    }
+
+    function applyHolidayStyles(holidayMap)
+    {
+      const cells = document.querySelectorAll('#calendar td[data-date]');
+      cells.forEach(cell => {
+        const dateKey = cell.getAttribute("data-date");
+
+        console.log(dateKey);
+
+        if(holidayMap[dateKey])
+        {
+          const dateSpan = cell.querySelector(".date");
+          if(dateSpan)
+          {
+            dateSpan.style.color = "red";
+          }
+
+          const holidays = holidayMap[dateKey].sort((a, b) => a.seq - b.seq)
+          const holidayText = holidays.map(item => item.dateName).join("\n");
+
+          let holidayDiv = document.createElement("div");
+          holidayDiv.classList.add("holidayText");
+          holidayDiv.style.position = "absolute";
+          holidayDiv.style.top = "5px";
+          holidayDiv.style.right = "5px";
+          holidayDiv.style.fontSIze = "0.8em";
+          holidayDiv.style.textAlign = "right";
+          holidayDiv.style.whiteSpace = "pre-line";
+          holidayDiv.style.color = "red";
+
+          cell.appendChild(holidayDiv);
+
+          holidayDiv.textContent = holidayText;
+        }
+      })
     }
 
      // 할일 목록
@@ -163,7 +242,6 @@
     // 드래그 중 drop 허용
     function allowDrop(event){
       event.preventDefault(); // dropTask 이벤트까지 호출되게 넣어줌
-      console.log("드롭이 들어옴");
     }
 
     // 달력 셀에 할일 드롭 시
@@ -211,10 +289,10 @@
     // 강사님 방법
     function dropTrash(event){
       event.preventDefault();
-      const taskId = event.dataTransfer.getData("text/plain");
+      const taskId = event.dataTransfer.getData('text/plain');
       if(tasksData[taskId]){ // 방어코드
         delete tasksData[taskId]; // 데이터에서 삭제
-        const taskElement = document.getElementById[taskId];
+        const taskElement = document.getElementById(taskId);
         
         if(taskElement && taskElement.parentElement){
           taskElement.parentElement.removeChild(taskElement);
@@ -245,6 +323,7 @@
 
     initHeader();
     renderCalendar();
+    renderTasksList();
 
     // 이전달
     function prevMonth(){
@@ -257,7 +336,6 @@
 
       initHeader();
       renderCalendar();
-      renderTasksList();
 
     }
 
@@ -272,7 +350,6 @@
       
       initHeader();
       renderCalendar();
-      renderTasksList();
     }
   </script>
 </body>
