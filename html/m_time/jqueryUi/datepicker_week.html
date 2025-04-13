@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    <style>
+        .ui-datepicker td.highlight a {
+        background-color: #3399ff !important;
+        color: white !important;
+        }
+        .block{display:block !important;}
+    </style>
+</head>
+<body>
+    <input type="text" id="weekPicker" placeholder="주간 선택" readonly style="width:200px; padding:6px;" />
+
+    <script>
+        $(function () {
+            let selectedDates = [];
+
+            $("#weekPicker").datepicker({
+                showOtherMonths: true,
+                // selectOtherMonths: true,
+                dateFormat: "yy-mm-dd",
+                onSelect: function (dateText, inst) {
+                    const selectedDate = new Date(dateText);
+                    const startOfWeek = new Date(selectedDate);
+                    startOfWeek.setDate(selectedDate.getDate() - selectedDate.getDay() + 1); // Monday
+
+                    selectedDates = [];
+
+                    for (let i = 0; i < 7; i++) { // 해당 주 7일
+                        const $date = new Date(startOfWeek);
+                        $date.setDate(startOfWeek.getDate() + i);
+                        selectedDates.push($.datepicker.formatDate('yy-mm-dd', $date));
+                    }
+
+                    // 입력창에 주간 범위 표시
+                    $("#weekPicker").val(selectedDates[0] + " ~ " + selectedDates[6]);
+
+                    setTimeout(() => {
+                        highlightSelectedWeek();
+                        $("#weekPicker").datepicker("refresh");
+                    }, 10);
+
+                },
+                onClose: function(dateText, inst) {
+                    setTimeout(() => {
+                        inst.dpDiv.stop(true, true).show();
+                    }, 10);
+                },
+                beforeShowDay: function (date) { // 주단위 선택 확인
+                const dateStr = $.datepicker.formatDate('yy-mm-dd', date);
+                if (selectedDates.includes(dateStr)) {
+                    return [true, 'highlight'];
+                }
+                return [true, ''];
+                }
+            });
+
+            // input 클릭시만 달력 닫기
+            // $("#weekPicker").on("focus", function () {
+            //     if($("#weekPicker").style.display == "block"){
+            //         console.log(2)
+            //         $("#weekPicker").datepicker("hide");
+            //     }
+            // });
+
+            function highlightSelectedWeek() {
+                $(".ui-datepicker td").each(function () {
+                const $td = $(this);
+                const date = $td.data("year") + "-" +
+                                ('0' + ($td.data("month") + 1)).slice(-2) + "-" +
+                                ('0' + $td.find('a').text()).slice(-2);
+                if (selectedDates.includes(date)) {
+                    $td.addClass("highlight");
+                } else {
+                    $td.removeClass("highlight");
+                }
+                });
+            }
+        });
+    </script>
+</body>
+</html>

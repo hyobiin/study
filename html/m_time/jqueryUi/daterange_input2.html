@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>daterange</title>
+    <script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+</head>
+<body>
+
+    <input type="text" id="startDate" placeholder="시작일 선택" readonly>
+    <input type="text" id="endDate" placeholder="종료일 선택" readonly>
+
+    <script>
+        $(document).ready(function () {
+            let activeInput = null; // 현재 클릭한 input 저장
+
+            // 하나의 daterangepicker만 생성
+            let dateRangePicker = $('body').daterangepicker({
+                autoUpdateInput: false,
+                singleDatePicker: true, // 하나의 날짜만 선택 가능
+                showDropdowns: true,
+                locale: {
+                    format: "YYYY-MM-DD",
+                    applyLabel: "확인",
+                    cancelLabel: "취소",
+                }
+            }, function(start) {
+                if (activeInput) {
+                    $(activeInput).val(start.format('YYYY-MM-DD'));
+                }
+            });
+
+            // input 클릭 시 같은 달력 사용
+            $("#startDate, #endDate").on("click", function () {
+                activeInput = this; // 현재 클릭한 input 저장
+                dateRangePicker.data('daterangepicker').setStartDate($(this).val() || moment()); // 기존 값 유지
+                dateRangePicker.data('daterangepicker').show();
+            });
+        });
+    </script>
+</body>
+</html>
