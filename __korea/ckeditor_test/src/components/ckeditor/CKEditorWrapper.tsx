@@ -42,6 +42,7 @@ export default function CKEditorWrapper({ editor, title = "CKEditor 예제", isD
 
     return(
         <div className="p-4">
+            <div>테스트</div>
             <h2 className='text-xl font-bold mb-2'>{title}</h2>
 
             {isDucoupled ? (
