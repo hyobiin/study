@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { useFormik } from "formik";
 import { cloneDeep } from "lodash";
-import Checks from "./Checks"
+import Check from "./Check"
 
 
 const CustomChkSelect = () => {
@@ -77,13 +77,13 @@ const CustomChkSelect = () => {
                                 {
                                     options.map((option) => (
                                         <li>
-                                            <Checks
+                                            <Check
                                                 key={option.id}
                                                 type='checkbox'
                                                 label={option.label}
                                                 checked={roleForm.values.permissions?.basicRole?.read[`read${option.id}`] || false}
                                                 onChange={(e) => handleCheckChange(e, option.id)}
-                                            ></Checks>
+                                            ></Check>
                                         </li>
                                     ))
                                 }
