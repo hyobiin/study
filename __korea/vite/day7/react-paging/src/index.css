@@ -66,3 +66,15 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Chrome, Safari, Edge, Opera */
+.custom_date_box input::-webkit-outer-spin-button,
+.custom_date_box input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox  */
+.custom_date_box input[type='number'] {
+  -moz-appearance: textfield;
+}

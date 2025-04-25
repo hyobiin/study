@@ -3,6 +3,7 @@ import Check from "./components/form/Check"
 import CustomChkSelect from "./components/form/CustomChkSelect"
 import Radio from "./components/form/Radio"
 import Form from "./pages/form"
+import CustomDate from "./components/form/CustomDate"
 // import PagingPosts from "./PagingPosts_btn"
 
 
@@ -52,6 +53,8 @@ function App() {
 
       <CustomChkSelect />
       <Form />
+
+      <CustomDate />
     </>
   )
 }
