@@ -8,12 +8,13 @@ const Radio = ({
     checked,
     onChange,
     label,
+    value,
     className = ''
 }) => {
 
     return(
         <InputWrapper id={id} label={label} className={`radio-box ${className}`}>
-            <input type={type} id={id} name={name} />
+            <input type={type} id={id} name={name} checked={checked} onChange={onChange} value={value} />
         </InputWrapper>
     )
 }
