@@ -21,6 +21,7 @@ function App() {
       {/* 동적 폼 추가 */}
       <AddForms />
 
+      {'[차트]'}
       <ChartList />
     </>
   )
