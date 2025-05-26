@@ -6,14 +6,17 @@ import Table from "./components/table/Table"
 import ChartList from "./pages/ChartList"
 // import PagingPosts from "./PagingPosts_btn"
 import { useState } from "react"
-import Form from "./pages/state-tic"
-import Test from "./pages/StateInp-tic"
+import Form from "./pages/tictactoe/State"
+import Test from "./pages/tictactoe/StateInp"
+import StateChoose from "./pages/tictactoe/StateChoose"
+import Clock from "./pages/tictactoe/Clock"
+import StateList from "./pages/tictactoe/StatelList"
+import MailClient from "./pages/tictactoe/StateSeveral"
 
 
 function App() {
 
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
-
   return (
     <>
       {/* <PagingPosts /> */}
@@ -39,6 +42,12 @@ function App() {
       {/* 틱택토 */}
       <Form />
       <Test />
+      <StateChoose />
+
+      <Clock time="오전 11시 30분" />
+
+      <StateList />
+      <MailClient />
     </>
   )
 }
