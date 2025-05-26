@@ -6,6 +6,8 @@ import Table from "./components/table/Table"
 import ChartList from "./pages/ChartList"
 // import PagingPosts from "./PagingPosts_btn"
 import { useState } from "react"
+import Form from "./pages/state-tic"
+import Test from "./pages/StateInp-tic"
 
 
 function App() {
@@ -33,6 +35,10 @@ function App() {
       {/* <ChartList /> */}
 
       {/* <Table selectedRowIndex={selectedRowIndex} setSelectedRowIndex={setSelectedRowIndex}/> */}
+
+      {/* 틱택토 */}
+      <Form />
+      <Test />
     </>
   )
 }
