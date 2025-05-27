@@ -12,6 +12,9 @@ import StateChoose from "./pages/tictactoe/StateChoose"
 import Clock from "./pages/tictactoe/Clock"
 import StateList from "./pages/tictactoe/StatelList"
 import MailClient from "./pages/tictactoe/StateSeveral"
+import SyncedInputs from "./pages/tictactoe/StateFilter"
+import FilterableList from "./pages/tictactoe/StateSearch"
+import ContactManager from "./pages/tictactoe/StateReset"
 
 
 function App() {
@@ -48,6 +51,12 @@ function App() {
 
       <StateList />
       <MailClient />
+
+      <SyncedInputs />
+      <hr /><br />
+      <FilterableList />
+
+      <ContactManager />
     </>
   )
 }
