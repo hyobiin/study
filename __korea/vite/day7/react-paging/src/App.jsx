@@ -15,6 +15,7 @@ import MailClient from "./pages/tictactoe/StateSeveral"
 import SyncedInputs from "./pages/tictactoe/StateFilter"
 import FilterableList from "./pages/tictactoe/StateSearch"
 import ContactManager from "./pages/tictactoe/StateReset"
+import Tictactoe from "./pages/tictactoe/game/Tictactoe"
 
 
 function App() {
@@ -57,6 +58,7 @@ function App() {
       <FilterableList />
 
       <ContactManager />
+      <Tictactoe />
     </>
   )
 }
