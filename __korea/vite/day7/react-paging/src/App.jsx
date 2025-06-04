@@ -16,7 +16,7 @@ import SyncedInputs from "./pages/tictactoe/StateFilter"
 import FilterableList from "./pages/tictactoe/StateSearch"
 import ContactManager from "./pages/tictactoe/StateReset"
 import Tictactoe from "./pages/tictactoe/game/Tictactoe"
-
+import Gallery from "./pages/tictactoe/reference/Onclick"
 
 function App() {
 
@@ -59,6 +59,7 @@ function App() {
 
       <ContactManager />
       <Tictactoe />
+      <Gallery />
     </>
   )
 }

@@ -78,3 +78,13 @@ button:focus-visible {
 .custom_date_box input[type='number'] {
   -moz-appearance: textfield;
 }
+
+.fade-in {
+  opacity: 1;
+  transition: opacity 0.3s ease-in;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}

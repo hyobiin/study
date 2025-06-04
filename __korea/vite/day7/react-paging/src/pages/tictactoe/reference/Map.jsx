@@ -31,28 +31,28 @@ const person = [
 function PersonList({ person }){
     return(
         <section className="profile">
-        <h2>{person.name}</h2>
-        <img
-            className="avatar"
-            src={getImageUrl(person.url)}
-            alt={person.name}
-            width={70}
-            height={70}
-        />
-        <ul>
-            <li>
-            <b>Profession: </b>
-            {person.profession}
-            </li>
-            <li>
-            <b>Awards: {person.awardsNumber} </b>
-            {person.awards}
-            </li>
-            <li>
-            <b>Discovered: </b>
-            {person.discovered}
-            </li>
-        </ul>
+            <h2>{person.name}</h2>
+            <img
+                className="avatar"
+                src={getImageUrl(person.url)}
+                alt={person.name}
+                width={70}
+                height={70}
+            />
+            <ul>
+                <li>
+                <b>Profession: </b>
+                {person.profession}
+                </li>
+                <li>
+                <b>Awards: {person.awardsNumber} </b>
+                {person.awards}
+                </li>
+                <li>
+                <b>Discovered: </b>
+                {person.discovered}
+                </li>
+            </ul>
         </section>
     )
 }
@@ -60,10 +60,10 @@ function PersonList({ person }){
 export default function Gallery() {
     return (
         <div>
-        <h1>Notable Scientists</h1>
-        {person.map((person) => (
-            <PersonList key={person.id} person={person}/>
-        ))}
+            <h1>Notable Scientists</h1>
+            {person.map((person) => (
+                <PersonList key={person.id} person={person}/>
+            ))}
         </div>
     );
 }
