@@ -17,6 +17,8 @@ import FilterableList from "./pages/tictactoe/StateSearch"
 import ContactManager from "./pages/tictactoe/StateReset"
 import Tictactoe from "./pages/tictactoe/game/Tictactoe"
 import Gallery from "./pages/tictactoe/reference/Onclick"
+import Async from "./pages/tictactoe/reference/Async"
+import TodoList from "./pages/tictactoe/reference/TodoList"
 
 function App() {
 
@@ -60,6 +62,10 @@ function App() {
       <ContactManager />
       <Tictactoe />
       <Gallery />
+
+      <Async />
+
+      <TodoList />
     </>
   )
 }
