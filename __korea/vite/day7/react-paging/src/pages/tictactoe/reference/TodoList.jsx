@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useImmer } from "use-immer";
 
-// 정렬, 완료는 따로 보여주기, localstorage 저장
+// 정렬, 완료는 따로 보여주기, 날짜 및 순서 추가, localstorage 저장
 
 export default function TodoList(){
     const [todos, setTodos] = useImmer([
