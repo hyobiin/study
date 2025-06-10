@@ -19,6 +19,8 @@ import Tictactoe from "./pages/tictactoe/game/Tictactoe"
 import Gallery from "./pages/tictactoe/reference/Onclick"
 import Async from "./pages/tictactoe/reference/Async"
 import TodoList from "./pages/tictactoe/reference/TodoList"
+import Counter from "./pages/tictactoe/reference/useReducer"
+import FilterExample from "./pages/tictactoe/reference/UseReducer2"
 
 function App() {
 
@@ -66,6 +68,9 @@ function App() {
       <Async />
 
       <TodoList />
+      <hr />
+      <Counter />
+      <FilterExample />
     </>
   )
 }

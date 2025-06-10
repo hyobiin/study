@@ -12,6 +12,8 @@ export default function TodoList(){
     const [searchText, setSearchText] = useImmer('');
     const [inputText, setInputText] = useImmer('');
     const [filteredTodos, setFilteredTodos] = useImmer(todos);
+    const [editingId, setEditingId] = useImmer(null);
+    const [editText, setEditText] = useImmer('');
 
     function handleAdd(text){
         const lastId = todos.length > 0
@@ -27,6 +29,16 @@ export default function TodoList(){
 
         setInputText('');
         handleShowAll();
+    }
+
+    function handleEdit(nextTodo){
+        setTodos(todos.map(data => {
+            if(data.id === nextTodo.id){
+                return nextTodo;
+            }else{
+                return data;
+            }
+        }))
     }
 
     function handleDelete(id){
@@ -116,7 +128,42 @@ export default function TodoList(){
                         key={data.id}
                         style={data.completed ? { textDecoration: 'line-through' } : {}}
                     >
-                        {data.text}
+                        {editingId === data.id ? (
+                            <>
+                                <input
+                                    type="text"
+                                    id="inpEdit"
+                                    value={editText}
+                                    onChange={(e) => setEditText(e.target.value)}
+                                    onKeyDown={(e) => {
+                                        if(e.key === 'Enter'){
+                                            handleEdit({ ...data, text: editText });
+                                            setEditingId(null);
+                                        }
+                                    }}
+                                    onBlur={() => {
+                                        handleEdit({ ...data, text: editText });
+                                        setEditingId(null);
+                                    }}
+                                    autoFoucus
+                                />
+                                <button
+                                    onClick={() =>{
+                                        handleEdit({ ...data, text: editText });
+                                        setEditingId(null);
+                                    }}>
+                                    수정 완료
+                                </button>
+                            </>
+                        ) : (
+                            <span>{data.text}</span>
+                        )}
+                        <button
+                            onClick={() => {
+                                setEditingId(data.id);
+                                setEditText(data.text);
+                            }}
+                        >수정</button>
                         <button
                             onClick={() => handleCheck(data.id)}
                             style={{
