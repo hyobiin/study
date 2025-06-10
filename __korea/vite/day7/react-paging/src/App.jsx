@@ -1,3 +1,4 @@
+import './index.css';
 import AddForms from "./components/form/AddForms"
 import CustomChkSelect from "./components/form/CustomChkSelect"
 import CustomDate from "./components/form/CustomDate"

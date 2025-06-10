@@ -1,4 +1,6 @@
 :root {
+  padding:20px;
+
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -87,4 +89,26 @@ button:focus-visible {
 .fade-out {
   opacity: 0;
   transition: opacity 0.3s ease-out;
+}
+
+/* todo */
+.todo_list{
+  display: flex;
+  gap: 2rem;
+}
+
+.todo_list > div{
+  min-width:200px;
+  padding:20px;
+  border:2px solid #ddd;
+  border-radius:8px;
+  background:#fdfdfd;
+}
+
+.todo_list li + li{
+  margin-top:8px;
+}
+
+.todo_list button{
+  margin-left:8px;
 }

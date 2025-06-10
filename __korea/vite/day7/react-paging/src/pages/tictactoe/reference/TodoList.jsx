@@ -1,7 +1,8 @@
 import { useEffect } from "react";
 import { useImmer } from "use-immer";
 
-// 정렬, 완료는 따로 보여주기, 날짜 및 순서 추가, localstorage 저장
+// Todo: 날짜 및 순서 추가
+// 완료: 완료는 따로 보여주기, 정렬, localstorage 저장
 
 export default function TodoList(){
     const [todos, setTodos] = useImmer([
@@ -14,6 +15,10 @@ export default function TodoList(){
     const [filteredTodos, setFilteredTodos] = useImmer(todos);
     const [editingId, setEditingId] = useImmer(null);
     const [editText, setEditText] = useImmer('');
+    const [sortOrder, setSortOrder] = useImmer('desc'); // desc 최신순, asc 오래된순
+
+    const completedTodos = filteredTodos.filter(todo => todo.completed); // 완료 목록
+    const uncompletedTodos = filteredTodos.filter(todo => !todo.completed); // 미완료 목록
 
     function handleAdd(text){
         const lastId = todos.length > 0
@@ -71,6 +76,18 @@ export default function TodoList(){
         setFilteredTodos(todos);
     }
 
+    function handleSortToggle(){
+        setSortOrder(prev => (prev === 'desc' ? 'asc' : 'desc'));
+
+        setFilteredTodos(draft =>
+            [...draft].sort((a, b) =>
+                sortOrder === 'desc'
+                    ? a.id - b.id  // 최신순
+                    : b.id - a.id
+            )
+        )
+    }
+
     useEffect(() => {
         handleShowAll();
     }, [todos]);
@@ -81,6 +98,17 @@ export default function TodoList(){
         }
     }, [searchText]);
 
+    useEffect(() => {
+        const storedTodos = localStorage.getItem('todos');
+        if(storedTodos){
+            setTodos(JSON.parse(storedTodos));
+        }
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem('todos', JSON.stringify(todos));
+    }, [todos]);
+
     return(
         <>
             <h2>
@@ -89,6 +117,7 @@ export default function TodoList(){
                 <span> | 완료 {todos.filter(todo => todo.completed).length}개</span>
             </h2>
             <button onClick={handleShowAll}>__전체 보기</button>
+            <button onClick={handleSortToggle}>{ sortOrder === 'desc' ? '최신순' : '오래된 순'}</button>
             <hr/>
             <div>
                 <input
@@ -122,66 +151,111 @@ export default function TodoList(){
                 />
                 <button onClick={() => handleAdd(inputText)}>추가</button>
             </div>
-            <ul>
-                {filteredTodos.map(data => (
-                    <li
-                        key={data.id}
-                        style={data.completed ? { textDecoration: 'line-through' } : {}}
-                    >
-                        {editingId === data.id ? (
-                            <>
-                                <input
-                                    type="text"
-                                    id="inpEdit"
-                                    value={editText}
-                                    onChange={(e) => setEditText(e.target.value)}
-                                    onKeyDown={(e) => {
-                                        if(e.key === 'Enter'){
-                                            handleEdit({ ...data, text: editText });
-                                            setEditingId(null);
-                                        }
-                                    }}
-                                    onBlur={() => {
-                                        handleEdit({ ...data, text: editText });
-                                        setEditingId(null);
-                                    }}
-                                    autoFoucus
-                                />
-                                <button
-                                    onClick={() =>{
-                                        handleEdit({ ...data, text: editText });
-                                        setEditingId(null);
-                                    }}>
-                                    수정 완료
-                                </button>
-                            </>
-                        ) : (
-                            <span>{data.text}</span>
-                        )}
-                        <button
-                            onClick={() => {
-                                setEditingId(data.id);
-                                setEditText(data.text);
-                            }}
-                        >수정</button>
-                        <button
-                            onClick={() => handleCheck(data.id)}
-                            style={{
-                                marginLeft: '10px',
-                                backgroundColor: data.completed ? 'green' : '',
-                                color: data.completed ? 'white' : '',
-                            }}
-                        >
-                            {data.completed ? '완료' : '미완료'}
-                        </button>
-                        <button
-                            onClick={() => handleDelete(data.id)}
-                        >
-                            삭제
-                        </button>
-                    </li>
-                ))}
-            </ul>
+            <div className="todo_list">
+                {/* 미완료 */}
+                <div>
+                    <span>미완료</span>
+                    <ul>
+                        {uncompletedTodos.length === 0
+                            ? (
+                                <li>미완료된 할 일이 없습니다.</li>
+                            ) : (
+                                uncompletedTodos.map(data => (
+                                    <li
+                                        key={data.id}
+                                    >
+                                        {editingId === data.id ? (
+                                            <>
+                                                <input
+                                                    type="text"
+                                                    id="inpEdit"
+                                                    value={editText}
+                                                    onChange={(e) => setEditText(e.target.value)}
+                                                    onKeyDown={(e) => {
+                                                        if(e.key === 'Enter'){
+                                                            handleEdit({ ...data, text: editText });
+                                                            setEditingId(null);
+                                                        }
+                                                    }}
+                                                    onBlur={() => {
+                                                        handleEdit({ ...data, text: editText });
+                                                        setEditingId(null);
+                                                    }}
+                                                    autoFocus
+                                                />
+                                                <button
+                                                    onClick={() =>{
+                                                        handleEdit({ ...data, text: editText });
+                                                        setEditingId(null);
+                                                    }}>
+                                                    수정 완료
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span>{data.text}</span>
+                                                <button
+                                                    onClick={() => {
+                                                        setEditingId(data.id);
+                                                        setEditText(data.text);
+                                                    }}
+                                                >수정</button>
+                                            </>
+                                        )}
+                                        <button
+                                            onClick={() => handleCheck(data.id)}
+                                            style={{
+                                                backgroundColor: data.completed ? 'green' : '',
+                                                color: data.completed ? 'white' : '',
+                                            }}
+                                        >
+                                            {data.completed ? '완료' : '미완료'}
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(data.id)}
+                                        >
+                                            삭제
+                                        </button>
+                                    </li>
+                                ))
+                            )}
+                    </ul>
+                </div>
+
+                {/* 완료 */}
+                <div>
+                    <span>완료</span>
+                    <ul>
+                        {completedTodos.length === 0 ? (
+                            <li>완료된 할 일이 없습니다.</li>
+                            ) : (
+                                completedTodos.map(data => (
+                                    <li
+                                        key={data.id}
+                                        style={{ textDecoration: 'line-through' }}
+                                    >
+                                        <span>{data.text}</span>
+                                        <button
+                                            onClick={() => handleCheck(data.id)}
+                                            style={{
+                                                backgroundColor: data.completed ? 'green' : '',
+                                                color: data.completed ? 'white' : '',
+                                            }}
+                                        >
+                                            {data.completed ? '완료' : '미완료'}
+                                        </button>
+                                        <button
+                                            onClick={() => handleDelete(data.id)}
+                                        >
+                                            삭제
+                                        </button>
+                                    </li>
+                                ))
+                            )
+                        }
+                    </ul>
+                </div>
+            </div>
         </>
     )
 };
