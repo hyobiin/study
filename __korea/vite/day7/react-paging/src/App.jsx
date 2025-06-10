@@ -22,6 +22,7 @@ import Async from "./pages/tictactoe/reference/Async"
 import TodoList from "./pages/tictactoe/reference/TodoList"
 import Counter from "./pages/tictactoe/reference/useReducer"
 import FilterExample from "./pages/tictactoe/reference/UseReducer2"
+import TodoListDnd from './pages/tictactoe/reference/TodoListDnd';
 
 function App() {
 
@@ -69,6 +70,8 @@ function App() {
       <Async />
 
       <TodoList />
+      <hr/>
+      <TodoListDnd />
       <hr />
       <Counter />
       <FilterExample />
