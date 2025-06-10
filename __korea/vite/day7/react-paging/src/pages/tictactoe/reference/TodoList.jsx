@@ -1,9 +1,6 @@
 import { useEffect } from "react";
 import { useImmer } from "use-immer";
 
-// Todo: 날짜 및 순서 추가
-// 완료: 완료는 따로 보여주기, 정렬, localstorage 저장
-
 export default function TodoList(){
     const [todos, setTodos] = useImmer([
         { id: 1, text: '공부', completed: false },
@@ -76,6 +73,7 @@ export default function TodoList(){
         setFilteredTodos(todos);
     }
 
+    // 정렬
     function handleSortToggle(){
         setSortOrder(prev => (prev === 'desc' ? 'asc' : 'desc'));
 
@@ -98,6 +96,7 @@ export default function TodoList(){
         }
     }, [searchText]);
 
+    // 로컬스토리지에서 불러오기
     useEffect(() => {
         const storedTodos = localStorage.getItem('todos');
         if(storedTodos){
@@ -105,12 +104,23 @@ export default function TodoList(){
         }
     }, []);
 
+    // 로컬스토리지에 저장
     useEffect(() => {
         localStorage.setItem('todos', JSON.stringify(todos));
     }, [todos]);
 
+    // 정렬 버그 해결 (새로 추가하면 정렬이 한 번에 안 되는 문제)
+    useEffect(() => {
+        const sorted = [...todos].sort((a, b) =>
+            sortOrder === 'desc' ? b.id - a.id : a.id - b.id
+        );
+        setFilteredTodos(sorted);
+    }, [todos, sortOrder]);
+
     return(
         <>
+            <hr />
+            <hr />
             <h2>
                 Todo List ||
                 <span> 총 {todos.length}개</span>
@@ -118,7 +128,9 @@ export default function TodoList(){
             </h2>
             <button onClick={handleShowAll}>__전체 보기</button>
             <button onClick={handleSortToggle}>{ sortOrder === 'desc' ? '최신순' : '오래된 순'}</button>
-            <hr/>
+            <hr />
+
+            {/* 서치 */}
             <div>
                 <input
                     type="text"
@@ -133,7 +145,9 @@ export default function TodoList(){
                 />
                 <button onClick={handleSearch}>검색</button>
             </div>
-            <hr/>
+            <hr />
+
+            {/* 추가 */}
             <div>
                 <input
                     type="text"
