@@ -27,8 +27,16 @@ import TodoListDnd from './pages/tictactoe/reference/TodoListDnd';
 function App() {
 
   const [selectedRowIndex, setSelectedRowIndex] = useState(null);
+  const [modal, setModal] = useState(false);
+
   return (
     <>
+      <button onClick={() => setModal(!modal)}>모달 띄우기</button>
+      {modal && (
+        <div style={{ background: '#eee' }}>
+          <p>모달이 띄워집니다</p>
+        </div>
+      )}
       {/* <PagingPosts /> */}
 
       {/* <CustomChkSelect /> */}

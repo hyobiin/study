@@ -25,6 +25,7 @@ function reducer(state, action) {
 
 function Counter() {
     const [state, dispatch] = useReducer(reducer, initialState);
+    // reducer => 액션에 따라 상태를 업데이트하는 함수
 
     // 버튼 클릭 시 모의 비동기 작업 예시
     const simulateLoading = () => {
