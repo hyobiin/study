@@ -23,6 +23,10 @@ import TodoList from "./pages/tictactoe/reference/TodoList"
 import Counter from "./pages/tictactoe/reference/useReducer"
 import FilterExample from "./pages/tictactoe/reference/UseReducer2"
 import TodoListDnd from './pages/tictactoe/reference/TodoListDnd';
+import FilterEx from './pages/tictactoe/reference/FilterEx';
+import { StateEx, ReducerEx, ImmerEx } from './pages/tictactoe/reference/StateEx';
+import { EffectEx, CallbackEx, MemoEx } from './pages/tictactoe/reference/EffectEx';
+import { RefEx } from './pages/tictactoe/reference/RefEx';
 
 function App() {
 
@@ -83,6 +87,21 @@ function App() {
       <hr />
       <Counter />
       <FilterExample />
+
+      <hr />
+      <span style={{ fontWeight: 'bold' }}>필터</span>
+      <hr />
+      <FilterEx />
+      <StateEx />
+      <ReducerEx />
+      <ImmerEx />
+
+      <EffectEx />
+      <CallbackEx />
+      <MemoEx />
+
+      <RefEx />
+      <RefCount />
     </>
   )
 }
