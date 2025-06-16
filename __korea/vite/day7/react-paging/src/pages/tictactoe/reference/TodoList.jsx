@@ -119,8 +119,6 @@ export default function TodoList(){
 
     return(
         <>
-            <hr />
-            <hr />
             <h2>
                 Todo List ||
                 <span> 총 {todos.length}개</span>

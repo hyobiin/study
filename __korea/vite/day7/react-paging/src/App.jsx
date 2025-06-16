@@ -27,6 +27,9 @@ import FilterEx from './pages/tictactoe/reference/FilterEx';
 import { StateEx, ReducerEx, ImmerEx } from './pages/tictactoe/reference/StateEx';
 import { EffectEx, CallbackEx, MemoEx } from './pages/tictactoe/reference/EffectEx';
 import { RefEx } from './pages/tictactoe/reference/RefEx';
+import { UseContextEx } from './pages/tictactoe/reference/UseContextEx';
+import GsapEx from './pages/pub/Gsap';
+import PinnedEx from './pages/pub/GsapPin';
 
 function App() {
 
@@ -81,7 +84,11 @@ function App() {
 
       <Async />
 
-      <TodoList />
+      <hr />
+      <hr />
+      <div style={{ marginTop: '10px', padding:'20px', border: '2px solid #ccc', borderRadius: '8px', 'background': '#ffefef' }}>
+        <TodoList />
+      </div>
       <hr/>
       <TodoListDnd />
       <hr />
@@ -100,8 +107,25 @@ function App() {
       <CallbackEx />
       <MemoEx />
 
-      <RefEx />
-      <RefCount />
+      {/* <RefEx />
+      <RefCount /> */}
+
+      <span>useContextEx</span>
+      <UseContextEx />
+
+      <GsapEx />
+      <div style={{height:300}}></div>
+      <div>
+        <div style={{ height: "100vh" }}>
+          <h2 style={{ textAlign: "center", marginTop: "50vh" }}>
+            ⬇️ 아래로 스크롤 해보세요
+          </h2>
+        </div>
+        <PinnedEx />
+        <div style={{ height: "100vh", background: "#ddd" }}>
+          <h2 style={{ textAlign: "center", marginTop: "50vh" }}>다음 섹션</h2>
+        </div>
+      </div>
     </>
   )
 }
