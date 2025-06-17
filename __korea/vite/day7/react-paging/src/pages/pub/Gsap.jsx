@@ -22,7 +22,7 @@ const GsapEx = () => {
     }
 
     useEffect(() => {
-        gsap.to(boxRef2.current, {
+        const anim1 = gsap.to(boxRef2.current, {
             scrollTrigger: {
                 trigger: boxRef2.current,
                 start: 'top 80%',
@@ -35,7 +35,7 @@ const GsapEx = () => {
             duration: 1,
         });
 
-        gsap.to(boxRef3.current, {
+        const anim2 = gsap.to(boxRef3.current, {
             scrollTrigger: {
                 trigger: boxRef3.current,
                 start: 'top 80%',
@@ -47,6 +47,13 @@ const GsapEx = () => {
             opacity: 1,
             duration: 1,
         });
+
+        return() => {
+            anim1.scrollTrigger.kill();
+            anim1.kill();
+            anim2.scrollTrigger.kill();
+            anim2.kill();
+        }
     }, []);
 
     return(

@@ -25,7 +25,8 @@ export default function TodoList(){
         setTodos(draft => {
             draft.push({
                 id: lastId + 1,
-                text
+                text,
+                completed: false,
             });
         });
 
@@ -70,7 +71,11 @@ export default function TodoList(){
     }
 
     function handleShowAll(){
-        setFilteredTodos(todos);
+        // 전체보기를 눌러도 정렬 부분 동기화
+        const sorted = [...todos].sort((a, b) =>
+            sortOrder === 'desc' ? b.id - a.id : a.id - b.id
+        );
+        setFilteredTodos(sorted);
     }
 
     // 정렬
@@ -129,10 +134,11 @@ export default function TodoList(){
             <hr />
 
             {/* 서치 */}
-            <div>
+            <div className="inp_box">
                 <input
                     type="text"
                     placeholder="검색어 입력"
+                    className="inp"
                     value={searchText}
                     onChange={(e) => setSearchText(e.target.value)}
                     onKeyDown={(e) => {
@@ -146,10 +152,11 @@ export default function TodoList(){
             <hr />
 
             {/* 추가 */}
-            <div>
+            <div className="inp_box">
                 <input
                     type="text"
                     placeholder="할 일 입력"
+                    className="inp"
                     value={inputText}
                     onChange={(e) => setInputText(e.target.value)}
                     onKeyDown={(e) => {
@@ -180,8 +187,9 @@ export default function TodoList(){
                                             <>
                                                 <input
                                                     type="text"
-                                                    id="inpEdit"
+                                                    id={`inpEdit-${data.id}`}
                                                     value={editText}
+                                                    className="inp"
                                                     onChange={(e) => setEditText(e.target.value)}
                                                     onKeyDown={(e) => {
                                                         if(e.key === 'Enter'){
@@ -189,10 +197,10 @@ export default function TodoList(){
                                                             setEditingId(null);
                                                         }
                                                     }}
-                                                    onBlur={() => {
-                                                        handleEdit({ ...data, text: editText });
-                                                        setEditingId(null);
-                                                    }}
+                                                    // onBlur={() => {
+                                                    //     handleEdit({ ...data, text: editText });
+                                                    //     setEditingId(null);
+                                                    // }}
                                                     autoFocus
                                                 />
                                                 <button

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function Test(){
+export default function TestEx(){
     const [firstName, setFirstName] = useState('Jane');
     const [lastName, setLastName] = useState('Jacobs');
     const [isEditing, setIsEditing] = useState(false);
