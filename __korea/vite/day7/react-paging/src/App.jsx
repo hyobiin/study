@@ -5,6 +5,8 @@ import TodoList from './pages/tictactoe/reference/TodoList';
 import Layout from './layout';
 import BtnTop from './components/BtnTop';
 import BtnInfo from './components/BtnInfo';
+import Modal_ from './components/modal/Modal';
+import WebSocketEchoTest from './Socket';
 
 function App() {
 
@@ -15,9 +17,11 @@ function App() {
           <Route path='pages/Test' element={<Test />}/>
           <Route path='pages/tictactoe/reference/TodoList' element={<TodoList />}/>
           <Route path='components/BtnInfo' element={<BtnInfo />}/>
+          <Route path='components/modal/Modal' element={<Modal_ />}/>
         </Route>
       </Routes>
 
+      <WebSocketEchoTest />
       <BtnTop />
     </>
   )
