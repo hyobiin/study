@@ -30,6 +30,7 @@ import { UseContextEx } from './tictactoe/reference/UseContextEx';
 import GsapEx from './pub/Gsap';
 import PinnedEx from './pub/GsapPin';
 import PinnedExSeveral from './pub/GsapPinSeveral';
+import TestModal from '../modal/ModalTest';
 
 function Test(){
 
@@ -128,6 +129,8 @@ function Test(){
         </div>
 
         <PinnedExSeveral /> */}
+
+        <TestModal/>
         </>
     )
 }
