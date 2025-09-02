@@ -43,7 +43,7 @@ export default function BtnInfo() {
 
             {/* 3번: react-pdf 직접 렌더링 */}
             <div>
-                <h3>3. react-pdf 로 직접 렌더링 (돋보기 같은 부분은 옵션으로 커스텀 해야 함)</h3>
+                <h3>3. react-pdf 로 직접 렌더링</h3>
                 <div style={{ display: 'flex', gap: '1rem', marginBottom: '1rem' }}>
                     <button onClick={() => setScale((prev) => Math.min(prev + 0.2, 3))}>확대 +</button>
                     <button onClick={() => setScale((prev) => Math.max(prev - 0.2, 0.5))}>축소 -</button>
