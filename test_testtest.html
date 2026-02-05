@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>달력 test</title>
+    <style>
+        /* Reset */
+        html,body{height:100%;}
+        body {position:relative;background-color:#fff;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:none;-moz-osx-font-smoothing:grayscale;color:#000;}
+        body::before{position:fixed;left:0;top:0;width:100%;height:0;content:'';}/* fix webkit bug(scroll event delay) */
+        body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,form,fieldset,p,button,iframe,th,td,a,select,input,textarea{margin:0;padding:0;font-family:'Pretendard';font-weight:400;color:#000;line-height:1;font-size:inherit;box-sizing:border-box}
+        var {font-style:normal;}
+        article,aside,details,figcaption,figure,footer,header,nav,section,summary,main{display:block;margin:0;padding:0;}
+        img,fieldset,iframe{border:0;}
+        li{list-style:none;}
+        button{overflow:visible;border:0;color:inherit;line-height:inherit;background:transparent;cursor:pointer;}
+        table{table-layout:fixed;border-collapse:collapse;border-spacing:0;width:100%;}
+        hr{display:none;}
+        legend{position:absolute; left:-9999px; top:0}
+        .sr_only, caption {position:absolute; top:-9999px; font-size:0 !important; height:0 !important;}
+        select, input, textarea{color:#000;border-radius:0;border:0;-webkit-appearance:none;}
+        i, em, u, cite {font-style:normal;}
+        strong{font-weight:700;}
+        b{font-weight:400;}
+        img{max-width:100%;border:0;vertical-align:middle;}
+        a{color:#000;text-decoration:none;-webkit-tap-highlight-color:rgba(0,0,0,0);}
+        address{font-style:normal;}
+        textarea{overflow-y:auto;resize:none;display:block}
+
+        /* 이벤트- 리스트 */
+        .event .month_con_wrap .month{font-size:24px;font-weight:700;line-height:34px;}
+        .event .month_con_wrap .top_wrap{display:flex;align-items:center;}
+        .event .month_con_wrap .top_wrap button{width:32px;height:32px;background:url(../images/common/ico_btn_prev.svg) no-repeat 50% 50% / 24px;}
+        .event .month_con_wrap .top_wrap .btn_next{-webkit-transform:rotate(180deg);-o-transform:rotate(180deg);-moz-transform:rotate(180deg);transform:rotate(180deg);}
+        .event .month_con_wrap .calendar_wrap{position:relative;display:flex;gap:24px;flex-wrap:wrap;padding-top:8px;}
+        .event .month_con_wrap .calendar_wrap .calendar_con_box{padding:12px 20px;border:1px solid #ccc;border-radius:8px;}
+        .event .month_con_wrap .calendar_wrap .calendar_head{display:flex;flex-wrap:wrap;border-bottom:1px solid #000;}
+        .event .month_con_wrap .calendar_wrap .calendar_head li{width:14.28%;padding:10px;font-size:14px;font-weight:700;line-height:20px;}
+        .event .month_con_wrap .calendar_wrap .calendar_head li.sat{color:#0055FF;}
+        .event .month_con_wrap .calendar_wrap .calendar_head li.sun{color:#E50A59;}
+        .event .month_con_wrap .calendar_wrap .calendar_days > div{position:relative;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .calendar_list{display:flex;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .calendar_list li{position:relative;width:14.28%;border-bottom:1px solid #E6E6E6;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .calendar_list li button{position:relative;width:100%;height:56px;padding:8px 10px 24px;font-size:16px;color:#ccc;line-height:24px;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .calendar_list li.active button{padding:6px 10px 22px;border:1px solid #0055FF;background:#EFF4FF;font-weight:700;color:#000;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .calendar_list li.none_line{border:0;}
+        .event .month_con_wrap .calendar_wrap .calendar_list_box{width:100%;}
+        .event .month_con_wrap .calendar_wrap .calendar_list_box .top{display:flex;justify-content:space-between;padding-bottom:9px;border-bottom:1px solid #000;}
+        .event .month_con_wrap .calendar_wrap .calendar_list_box .top strong{font-size:16px;font-weight:700;line-height:24px;}
+        .event .month_con_wrap .calendar_wrap .calendar_list_box .top span{font-size:14px;color:#666;line-height:20px;}
+        .event .month_con_wrap .calendar_wrap .calendar_list_box .top span em{font-weight:700;color:#0055FF;}
+
+        /* 시간 flag */
+        .event .month_con_wrap .calendar_wrap .calendar_days .time_list{position:absolute;right:15px;top:5px;display:flex;flex-direction:column;align-items:flex-end;text-align:right;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .time_list div{display:inline-block;padding:2px 3px;border:1px solid #ccc;border-radius:8px;background:#999;font-size:11px;}
+
+        /* 연차 flag */
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list{overflow-y:auto;overflow-x:hidden;position:absolute;left:15px;right:15px;top:48px;display:flex;flex-wrap:wrap;gap:5px;max-height:47px;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li{position:relative;width:100%;border:0;padding:3px 0;background:red;text-align:center;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.whole{background:pink;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.half{background:lightblue;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li::before{content:'';position:absolute;left:-20px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50px;background:green;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.whole::before{content:'';position:absolute;left:-20px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50px;background:pink;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.half::before{content:'';position:absolute;left:-20px;top:50%;width:10px;height:10px;margin-top:-5px;border-radius:50px;background:blue;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.start_sun{margin-left:25px;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.start_mon{margin-left:calc(14.28% + 35px);}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.start_thu{margin-left:calc(28.56% + 35px);}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.start_wed{margin-left:calc(42.84% + 35px);}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.start_thr{margin-left:calc(57.12% + 35px);}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.start_fri{margin-left:calc(71.40% + 35px);}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.start_sat{margin-left:calc(85.68% + 35px);}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.end_sun{margin-right:calc(85.68% + 15px);}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.end_mon{margin-right:calc(71.40% + 15px);}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.end_thu{margin-right:calc(57.12% + 15px);}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.end_wed{margin-right:calc(42.84% + 15px);}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.end_thr{margin-right:calc(28.56% + 15px);}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.end_fri{margin-right:calc(14.28% + 15px);}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.end_sat{margin-right:15px;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;width:98%;}
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.whole span,
+        .event .month_con_wrap .calendar_wrap .calendar_days .flag_list li.half span{overflow:unset;}
+
+        @media screen and (min-width:1024px){
+            /* 이벤트- 리스트 */
+            .event .month_con_wrap .month{font-size:28px;line-height:38px;}
+            .event .month_con_wrap .calendar_wrap{flex-wrap:nowrap;}
+            .event .month_con_wrap .calendar_wrap .calendar_con_box,
+            .event .month_con_wrap .calendar_wrap .calendar_list_box{width:70%;padding:15px 23px;border:1px solid #ccc;border-radius:8px;}
+            .event .month_con_wrap .calendar_wrap .calendar_list_box{padding-bottom:23px !important;}
+            .event .month_con_wrap .calendar_wrap .calendar_days .calendar_list li button{height:89px;padding:0 5px 40px;text-align:left;}
+            .event .month_con_wrap .calendar_wrap .calendar_days .calendar_list li.active button{padding:0 9px 37px;}
+            .event .month_con_wrap .calendar_wrap .calendar_list_box .top{padding-bottom:11px;}
+            .event .month_con_wrap .calendar_wrap .calendar_list_box .top strong{font-size:18px;line-height:26px;}
+            .event .month_con_wrap .calendar_wrap .calendar_list_box .top span{font-size:16px;line-height:24px;}
+        }
+    </style>
+</head>
+<body>
+    <main id="container" class="container">
+        <section class="event">
+            <div class="inner">
+                <div class="square_tab_con_wrap">
+                    <!-- 월간 이벤트 -->
+                    <div class="month_con_wrap">
+                        <div class="calendar_wrap">
+                            <div class="calendar_con_box">
+                                <ul class="calendar_head">
+                                    <li class="sun">일</li>
+                                    <li>월</li>
+                                    <li>화</li>
+                                    <li>수</li>
+                                    <li>목</li>
+                                    <li>금</li>
+                                    <li class="sat">토</li>
+                                </ul>
+                                <div class="calendar_days">
+                                    <!-- [D] li 클래스 참고
+                                        ① 활성 된 날짜: class="active"
+                                        ② 리스트가 있는 날짜: class="has_list"
+                                        ③ 토요일: class="sat"
+                                        ④ 일요일, 공휴일: class="sun"
+                                        ⑤ 마지막 줄 li 라인 없음: class="none_line"
+                                    -->
+                                    <div>
+                                        <ul class="calendar_list">
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li></li>
+                                            <li class="sat active">
+                                                <button type="button" title="선택됨">1</button>
+                                                <div class="time_list">
+                                                    <div><span class="hour">10</span> 시간</div>
+                                                    <div><span class="hour">0</span> 시간 <span class="minute">30</span> 분</div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <ul class="flag_list">
+                                            <li class="start_sat"><span>출산휴가</span></li>
+                                            <li class="start_sun end_sun whole"><span>연차</span></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <ul class="calendar_list">
+                                            <li class="sun">
+                                                <button type="button">2</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">3</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">4</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">5</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">6</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">7</button>
+                                            </li>
+                                            <li class="sat">
+                                                <button type="button">8</button>
+                                            </li>
+                                        </ul>
+                                        <ul class="flag_list">
+                                            <li class="start_sun"><span>출산휴가</span></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <ul class="calendar_list">
+                                            <li class="sun">
+                                                <button type="button">9</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">10</button>
+                                                <div class="time_list">
+                                                    <div><span class="hour">10</span> 시간</div>
+                                                    <div><span class="hour">0</span> 시간 <span class="minute">30</span> 분</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <button type="button">11</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">12</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">13</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">14</button>
+                                            </li>
+                                            <li class="sat">
+                                                <button type="button">15</button>
+                                            </li>
+                                        </ul>
+                                        <ul class="flag_list">
+                                            <li class="start_sun end_wed"><span>출산휴가</span></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <ul class="calendar_list">
+                                            <li class="sun">
+                                                <button type="button">16</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">17</button>
+                                                <div class="time_list">
+                                                    <div><span class="hour">10</span> 시간</div>
+                                                </div>
+                                            </li>
+                                            <li>
+                                                <button type="button">18</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">19</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">20</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">21</button>
+                                            </li>
+                                            <li class="sat">
+                                                <button type="button">22</button>
+                                            </li>
+                                        </ul>
+                                        <ul class="flag_list">
+                                            <li class="start_mon end_mon half"><span>09:00~20:00</span></li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <ul class="calendar_list">
+                                            <li class="sun">
+                                                <button type="button">23</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">24</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">25</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">26</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">27</button>
+                                            </li>
+                                            <li>
+                                                <button type="button">28</button>
+                                            </li>
+                                            <li class="sat">
+                                                <button type="button">29</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <ul class="calendar_list">
+                                            <li class="sun none_line">
+                                                <button type="button">30</button>
+                                            </li>
+                                            <li class="none_line">
+                                                <button type="button">31</button>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--// 월간 이벤트 -->
+                </div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
